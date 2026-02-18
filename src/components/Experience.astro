@@ -1,6 +1,6 @@
 ---
-import type { Lang } from '../i18n';
-import { useTranslations } from '../i18n';
+import type { Lang } from "../i18n";
+import { useTranslations } from "../i18n";
 
 interface Props {
   lang: Lang;
@@ -17,41 +17,54 @@ const experience = t.experience;
       <h1 class="titleFont text-left mt-5">{experience.title}</h1>
     </div>
     <div class="experience">
-      {experience.jobs.map((job) => (
-        <div class="experienceCard row mt-4">
-          <div class="col-lg-3 col-12">
-            <p class="subtitleFont">{job.number}.</p>
-            <p class="subtitleFont">{job.company}</p>
-            <p class="normalFont" style="font-size:14px; color: var(--text-theme-secondary);">{job.role}</p>
-            <p class="normalFont" style="font-size:13px; color: var(--text-theme-secondary);">{job.period}</p>
-          </div>
-          <div class="col-lg-9 col-12">
-            <p class="collapsible normalFont pt-4">{job.summary}</p>
-            <div class="content normalFont">
-              <p>{job.details}</p>
+      {
+        experience.jobs.map((job) => (
+          <div class="experienceCard row mt-4">
+            <div class="col-lg-3 col-12">
+              <p class="subtitleFont">{job.number}.</p>
+              <p class="subtitleFont">{job.company}</p>
+              <p
+                class="normalFont"
+                style="font-size:14px; color: var(--text-theme-secondary);"
+              >
+                {job.role}
+              </p>
+              <p
+                class="normalFont"
+                style="font-size:13px; color: var(--text-theme-secondary);"
+              >
+                {job.period}
+              </p>
             </div>
-            <p class="normalFont">Tech Stack:</p>
-            <div class="d-flex flex-row flex-wrap">
-              {job.stack.map((tech) => (
-                <span class="bubbleData normalFont mx-2 my-1">{tech}</span>
-              ))}
+            <div class="col-lg-9 col-12">
+              <p class="collapsible normalFont pt-4">{job.summary}</p>
+              <div class="content normalFont">
+                <p>{job.details}</p>
+              </div>
+              <p class="normalFont">Tech Stack:</p>
+              <div class="d-flex flex-row flex-wrap">
+                {job.stack.map((tech) => (
+                  <span class="bubbleData normalFont mx-2 my-1">{tech}</span>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))
+      }
     </div>
   </div>
 </section>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener("DOMContentLoaded", () => {
     const coll = document.getElementsByClassName("collapsible");
     for (let i = 0; i < coll.length; i++) {
-      coll[i].addEventListener("click", function(this: HTMLElement) {
+      coll[i].addEventListener("click", function (this: HTMLElement) {
         this.classList.toggle("active");
         const content = this.nextElementSibling as HTMLElement;
         if (content) {
-          content.style.display = content.style.display === "block" ? "none" : "block";
+          content.style.display =
+            content.style.display === "block" ? "none" : "block";
         }
       });
     }
@@ -82,6 +95,8 @@ const experience = t.experience;
     overflow: hidden;
   }
   @media only screen and (max-width: 600px) {
-    .experienceSection { padding: 50px 0px; }
+    .experienceSection {
+      padding: 50px 0px;
+    }
   }
 </style>

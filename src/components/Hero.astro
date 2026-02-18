@@ -1,6 +1,6 @@
 ---
-import type { Lang } from '../i18n';
-import { useTranslations } from '../i18n';
+import type { Lang } from "../i18n";
+import { useTranslations } from "../i18n";
 
 interface Props {
   lang: Lang;
@@ -14,18 +14,26 @@ const marqueeItems = t.hero.marquee;
 <section class="heroSection d-flex flex-column full-vh" id="home">
   <canvas id="dustCanvas" style="z-index: 0;"></canvas>
   <div class="full-vh d-flex flex-column">
-    <h1 class="text-center herotitle">{t.hero.name}<br/>{t.hero.lastName}</h1>
-    <h2 class="mt-5 text-center subtitleFont p-2 neutralFonts">{t.hero.role}</h2>
+    <h1 class="text-center herotitle">{t.hero.name}<br />{t.hero.lastName}</h1>
+    <h2 class="mt-5 text-center subtitleFont p-2 neutralFonts">
+      {t.hero.role}
+    </h2>
     <p class="text-center subtitleFont p-2">"{t.hero.tagline}"</p>
     <div class="marquee-container mt-auto container mb-lg-2 mb-5">
       <div class="marque-gradiant"></div>
       <div class="marquee-content">
-        {marqueeItems.map((item: string) => (
-          <span class="marqueeText">{item}</span>
-        ))}
-        {marqueeItems.map((item: string) => (
-          <span class="marqueeText" aria-hidden="true">{item}</span>
-        ))}
+        {
+          marqueeItems.map((item: string) => (
+            <span class="marqueeText">{item}</span>
+          ))
+        }
+        {
+          marqueeItems.map((item: string) => (
+            <span class="marqueeText" aria-hidden="true">
+              {item}
+            </span>
+          ))
+        }
       </div>
     </div>
   </div>
@@ -34,22 +42,34 @@ const marqueeItems = t.hero.marquee;
 <style>
   .heroSection {
     background: rgb(255, 255, 255);
-    background: radial-gradient(circle at top center, rgba(255, 255, 255, 0.4), rgba(0, 0, 0, 0.8) 5%);
+    background: radial-gradient(
+      circle at top center,
+      rgba(255, 255, 255, 0.4),
+      rgba(0, 0, 0, 0.8) 5%
+    );
     background-position: 50% 75%;
     background-size: 200% 100%;
   }
-  canvas { display: block; }
+  canvas {
+    display: block;
+  }
   #dustCanvas {
     position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     z-index: -1;
   }
   .herotitle {
     font-size: 120px;
     text-align: center;
-    background: rgb(0,0,0);
-    background: radial-gradient(circle at top center, rgba(255,255,255,0.1), rgba(68,61,61,0.8) 104%);
+    background: rgb(0, 0, 0);
+    background: radial-gradient(
+      circle at top center,
+      rgba(255, 255, 255, 0.1),
+      rgba(68, 61, 61, 0.8) 104%
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -64,19 +84,30 @@ const marqueeItems = t.hero.marquee;
   }
   .marque-gradiant {
     position: absolute;
-    top: 0; height: 100%; width: 100%;
+    top: 0;
+    height: 100%;
+    width: 100%;
     z-index: 2;
-    background: linear-gradient(to right, black, transparent 10%, transparent 90%, black);
+    background: linear-gradient(
+      to right,
+      black,
+      transparent 10%,
+      transparent 90%,
+      black
+    );
     pointer-events: none;
   }
   .marquee-content {
     display: inline-block;
     white-space: nowrap;
     overflow: clip;
-    animation: marquee-move-text var(--speed, 25s) linear infinite var(--direction, forwards);
+    animation: marquee-move-text var(--speed, 25s) linear infinite
+      var(--direction, forwards);
   }
   @keyframes marquee-move-text {
-    to { transform: translateX(-50%); }
+    to {
+      transform: translateX(-50%);
+    }
   }
   .marqueeText {
     font-size: 18px;
@@ -98,19 +129,35 @@ const marqueeItems = t.hero.marquee;
   const isMobileHero = window.innerWidth < 600;
 
   const heroConfig = {
-    div: { radius: 5, maxRadius: 29, speed: 0.3, opacity: 0, maxOpacity: 0.2, opacityStep: 0.05 },
-    text: { radius: isMobileHero ? 180 : 29, maxRadius: 49, speed: 0.2, opacity: isMobileHero ? 0.8 : 0.2, maxOpacity: 1, opacityStep: 0.1 }
+    div: {
+      radius: 5,
+      maxRadius: 29,
+      speed: 0.3,
+      opacity: 0,
+      maxOpacity: 0.2,
+      opacityStep: 0.05,
+    },
+    text: {
+      radius: isMobileHero ? 180 : 29,
+      maxRadius: 49,
+      speed: 0.2,
+      opacity: isMobileHero ? 0.8 : 0.2,
+      maxOpacity: 1,
+      opacityStep: 0.1,
+    },
   };
 
-  const gradientPrefix = 'radial-gradient(circle at top center, rgba(255, 255, 255,';
-  const divGradientSuffix = '), rgba(0, 0, 0, 0.8)';
-  const textGradientSuffix = '), rgba(64, 51, 51)';
+  const gradientPrefix =
+    "radial-gradient(circle at top center, rgba(255, 255, 255,";
+  const divGradientSuffix = "), rgba(0, 0, 0, 0.8)";
+  const textGradientSuffix = "), rgba(64, 51, 51)";
 
   function animateGradientDiv() {
     const { div } = heroConfig;
     div.radius += div.speed;
     div.opacity = Math.min(div.opacity + div.opacityStep, div.maxOpacity);
-    if (heroSection) heroSection.style.background = `${gradientPrefix} ${div.opacity}${divGradientSuffix} ${div.radius}%)`;
+    if (heroSection)
+      heroSection.style.background = `${gradientPrefix} ${div.opacity}${divGradientSuffix} ${div.radius}%)`;
     if (div.radius < div.maxRadius) requestAnimationFrame(animateGradientDiv);
     else animateTextGradient();
   }
@@ -123,18 +170,19 @@ const marqueeItems = t.hero.marquee;
       Object.assign(heroTitle.style, {
         background: `${gradientPrefix} ${text.opacity}${textGradientSuffix} ${text.radius}%)`,
         webkitBackgroundClip: "text",
-        webkitTextFillColor: "transparent"
+        webkitTextFillColor: "transparent",
       });
     }
-    if (text.radius < text.maxRadius) requestAnimationFrame(animateTextGradient);
+    if (text.radius < text.maxRadius)
+      requestAnimationFrame(animateTextGradient);
   }
 
   animateGradientDiv();
 
   // Stars / Dust canvas
-  const canvas = document.getElementById('dustCanvas') as HTMLCanvasElement;
+  const canvas = document.getElementById("dustCanvas") as HTMLCanvasElement;
   if (canvas) {
-    const ctx = canvas.getContext('2d')!;
+    const ctx = canvas.getContext("2d")!;
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     let canvasWidth = canvas.width;
@@ -151,23 +199,36 @@ const marqueeItems = t.hero.marquee;
     const TWO_PI = Math.PI * 2;
 
     let isThrottled = false;
-    window.addEventListener('mousemove', (event) => {
+    window.addEventListener("mousemove", (event) => {
       if (!isThrottled) {
-        requestAnimationFrame(() => { mouseX = event.clientX; mouseY = event.clientY; isThrottled = false; });
+        requestAnimationFrame(() => {
+          mouseX = event.clientX;
+          mouseY = event.clientY;
+          isThrottled = false;
+        });
         isThrottled = true;
       }
     });
 
     class Particle {
-      x = 0; y = 0; radius = 0; xSpeed = 0; ySpeed = 0; opacity = 0; life = 0;
-      constructor() { this.reset(); }
+      x = 0;
+      y = 0;
+      radius = 0;
+      xSpeed = 0;
+      ySpeed = 0;
+      opacity = 0;
+      life = 0;
+      constructor() {
+        this.reset();
+      }
       reset() {
         this.x = Math.random() * canvasWidth;
         this.y = Math.random() * canvasHeight;
         this.radius = Math.random() * 2;
         this.xSpeed = (Math.random() - 0.5) * 0.0000001;
         this.ySpeed = (Math.random() - 0.5) * 0.0000001;
-        this.opacity = Math.random() * (MAX_OPACITY - MIN_OPACITY) + MIN_OPACITY;
+        this.opacity =
+          Math.random() * (MAX_OPACITY - MIN_OPACITY) + MIN_OPACITY;
         this.life = Math.random() * (MAX_LIFE - MIN_LIFE) + MIN_LIFE;
       }
       update() {
@@ -196,7 +257,10 @@ const marqueeItems = t.hero.marquee;
     let activeParticles = 0;
 
     function createParticle() {
-      if (activeParticles < MAX_PARTICLES) { particlePool[activeParticles].reset(); activeParticles++; }
+      if (activeParticles < MAX_PARTICLES) {
+        particlePool[activeParticles].reset();
+        activeParticles++;
+      }
     }
 
     function animateParticles() {
@@ -207,18 +271,21 @@ const marqueeItems = t.hero.marquee;
         particle.draw();
         if (particle.life <= 0) {
           activeParticles--;
-          if (i < activeParticles) particlePool[i] = particlePool[activeParticles];
+          if (i < activeParticles)
+            particlePool[i] = particlePool[activeParticles];
         }
       }
       createParticle();
       requestAnimationFrame(animateParticles);
     }
 
-    const resizeObserver = new ResizeObserver(entries => {
+    const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const { width, height } = entry.contentRect;
-        canvas.width = width; canvas.height = height;
-        canvasWidth = width; canvasHeight = height;
+        canvas.width = width;
+        canvas.height = height;
+        canvasWidth = width;
+        canvasHeight = height;
       }
     });
     resizeObserver.observe(canvas);

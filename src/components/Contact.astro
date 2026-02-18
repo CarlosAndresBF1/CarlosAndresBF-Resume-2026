@@ -1,0 +1,236 @@
+---
+import type { Lang } from "../i18n";
+import { useTranslations } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const contact = t.contact;
+---
+
+<section class="connect flex-col-wise full-vh mt-5" id="contact">
+  <div class="container">
+    <div class="row d-flex align-items-between">
+      <div class="col-lg-6 col-12 connectMessage d-flex flex-column">
+        <div>
+          <span style="font-size: 140px; line-height: 140px;"
+            >{contact.title.charAt(0)}</span
+          >
+          <span style="font-size: 60px;">{contact.title.slice(1)} </span>
+          <br />
+          <span style="font-size: 140px; line-height: 140px;"
+            >{contact.titleHighlight.charAt(0)}</span
+          >
+          <span style="font-size: 60px;">{contact.titleHighlight.slice(1)}</span
+          >
+        </div>
+        <p>{contact.subtitle}</p>
+      </div>
+      <div class="col-lg-6 col-12">
+        <p class="titleFont mx-2 my-2">{contact.form.message}</p>
+        <form id="contactForm" class="row gap-2 contactForm">
+          <div class="contactForm col-12">
+            <input
+              name="name"
+              id="contactName"
+              type="text"
+              placeholder={contact.form.name}
+              required
+            />
+          </div>
+          <div class="col-12">
+            <input
+              name="email"
+              id="contactEmail"
+              type="email"
+              placeholder={contact.form.email}
+              required
+            />
+          </div>
+          <div class="col-12">
+            <input
+              type="text"
+              name="subject"
+              id="contactSubject"
+              placeholder={contact.form.subject}
+              required
+            />
+          </div>
+          <div class="col-12">
+            <textarea
+              name="message"
+              placeholder={contact.form.message}
+              id="contactMessage"
+              rows={6}
+              required></textarea>
+          </div>
+          <div class="col-12">
+            <button type="submit" id="sendBtn">{contact.form.send}</button>
+          </div>
+          <div class="col-12">
+            <p
+              id="formStatus"
+              class="normalFont text-center"
+              style="display:none;"
+            >
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script
+  define:vars={{
+    successMsg: contact.form.success,
+    errorMsg: contact.form.error,
+    sendingMsg: contact.form.sending,
+    sendLabel: contact.form.send,
+  }}
+>
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("contactForm");
+    const sendBtn = document.getElementById("sendBtn");
+    const formStatus = document.getElementById("formStatus");
+
+    if (form) {
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        if (sendBtn) {
+          sendBtn.textContent = sendingMsg;
+          sendBtn.setAttribute("disabled", "true");
+        }
+
+        const formData = new FormData(form);
+        const data = {
+          name: formData.get("name"),
+          email: formData.get("email"),
+          subject: formData.get("subject"),
+          message: formData.get("message"),
+        };
+
+        try {
+          const response = await fetch("/api/contact", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+          });
+
+          if (formStatus) {
+            if (response.ok) {
+              formStatus.textContent = successMsg;
+              formStatus.style.display = "block";
+              formStatus.style.color = "#4ade80";
+              form.reset();
+            } else {
+              formStatus.textContent = errorMsg;
+              formStatus.style.display = "block";
+              formStatus.style.color = "#f87171";
+            }
+          }
+        } catch (err) {
+          if (formStatus) {
+            formStatus.textContent = errorMsg;
+            formStatus.style.display = "block";
+            formStatus.style.color = "#f87171";
+          }
+        } finally {
+          if (sendBtn) {
+            sendBtn.textContent = sendLabel;
+            sendBtn.removeAttribute("disabled");
+          }
+          setTimeout(() => {
+            if (formStatus) formStatus.style.display = "none";
+          }, 5000);
+        }
+      });
+    }
+  });
+</script>
+
+<style>
+  .connect {
+    width: 100%;
+    background-color: var(--bg-theme-secondary);
+  }
+  .contactForm div {
+    position: relative;
+  }
+  .contactForm div input {
+    font-size: 18px;
+    width: 100%;
+    display: inline-block;
+    padding: 15px;
+    border-radius: 5px;
+    border: none;
+    color: var(--text-theme-primary);
+    background-color: var(--bg-theme-primary);
+    border: 1px solid var(--bg-theme-secondary);
+    cursor: pointer;
+  }
+  .contactForm div textarea {
+    font-size: 18px;
+    display: inline-block;
+    padding: 15px;
+    width: 100%;
+    border-radius: 5px;
+    border: none;
+    color: var(--text-theme-primary);
+    background-color: var(--bg-theme-primary);
+    border: 1px solid var(--bg-theme-secondary);
+    cursor: pointer;
+  }
+  .contactForm div button {
+    display: inline-block;
+    padding: 15px;
+    width: 100%;
+    border-radius: 5px;
+    border: none;
+    color: var(--text-theme-primary);
+    background-color: var(--bg-theme-primary);
+    border: 1px solid var(--bg-theme-secondary);
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  .contactForm div button:hover {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.093) 0%,
+      rgba(0, 0, 0, 1) 30%,
+      rgba(0, 0, 0, 1) 70%,
+      rgba(255, 255, 255, 0.208) 100%
+    );
+  }
+  .contactForm div button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .connectMessage span {
+    display: inline;
+    color: var(--text-theme-secondary);
+  }
+  .connectMessage p {
+    font-size: 25px;
+    letter-spacing: 3px;
+    text-align: justify;
+    color: var(--text-theme-secondary);
+  }
+  @media only screen and (max-width: 600px) {
+    .connect {
+      padding: 50px 0px;
+    }
+    .connectMessage span {
+      font-size: 40px !important;
+      line-height: 40px !important;
+    }
+    .connectMessage span:first-child {
+      font-size: 80px !important;
+      line-height: 80px !important;
+    }
+  }
+</style>

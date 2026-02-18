@@ -1,6 +1,6 @@
 ---
-import type { Lang } from '../i18n';
-import { useTranslations } from '../i18n';
+import type { Lang } from "../i18n";
+import { useTranslations } from "../i18n";
 
 interface Props {
   lang: Lang;
@@ -13,7 +13,9 @@ const summaryData = t.summary;
 
 <section class="summary-details flex-col-wise w-100 full-vh" id="about">
   <section class="container full-vh row">
-    <div class="displaycontentdiv col-lg-6 col-12 d-flex flex-column justify-content-center">
+    <div
+      class="displaycontentdiv col-lg-6 col-12 d-flex flex-column justify-content-center"
+    >
       <h1 id="tiitleWord" class="titleFont">{t.about.title}</h1>
       <p id="subtitleWord" class="subtitleFont">{t.about.subtitle}</p>
       <div class="normalFont mt-2">
@@ -31,40 +33,102 @@ const summaryData = t.summary;
                 <p id="heading" class="headingFont">{t.about.title}</p>
               </div>
             </div>
-            {t.about.circleItems.map((_item: string, i: number) => (
-              <div class="circle">
-                {i === 0 && (
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.0" stroke="#e1e1e1">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                  </svg>
-                )}
-                {i === 1 && (
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.0" stroke="#e1e1e1">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" />
-                  </svg>
-                )}
-                {i === 2 && (
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.0" stroke="#e1e1e1">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25" />
-                  </svg>
-                )}
-                {i === 3 && (
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.0" stroke="#e1e1e1">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
-                  </svg>
-                )}
-                {i === 4 && (
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.0" stroke="#e1e1e1">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z" />
-                  </svg>
-                )}
-                {i === 5 && (
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.0" stroke="#e1e1e1">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
-                  </svg>
-                )}
-              </div>
-            ))}
+            {
+              t.about.circleItems.map((_item: string, i: number) => (
+                <div class="circle">
+                  {i === 0 && (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.0"
+                      stroke="#e1e1e1"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                      />
+                    </svg>
+                  )}
+                  {i === 1 && (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.0"
+                      stroke="#e1e1e1"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"
+                      />
+                    </svg>
+                  )}
+                  {i === 2 && (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.0"
+                      stroke="#e1e1e1"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25"
+                      />
+                    </svg>
+                  )}
+                  {i === 3 && (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.0"
+                      stroke="#e1e1e1"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5"
+                      />
+                    </svg>
+                  )}
+                  {i === 4 && (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.0"
+                      stroke="#e1e1e1"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z"
+                      />
+                    </svg>
+                  )}
+                  {i === 5 && (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.0"
+                      stroke="#e1e1e1"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"
+                      />
+                    </svg>
+                  )}
+                </div>
+              ))
+            }
           </div>
         </div>
       </section>
@@ -86,18 +150,21 @@ const summaryData = t.summary;
     titleWord: document.getElementById("tiitleWord"),
     subtitleWord: document.getElementById("subtitleWord"),
     paragraphLines: document.getElementById("paragraphLines"),
-    summaryDetails: document.querySelector(".summary-details")
+    summaryDetails: document.querySelector(".summary-details"),
   };
 
   const calculatePosition = (angle) => ({
     left: Math.cos(angle * DEG_TO_RAD) * radius + variable,
-    top: Math.sin(angle * DEG_TO_RAD) * radius + variable
+    top: Math.sin(angle * DEG_TO_RAD) * radius + variable,
   });
 
   const positionCircles = (startAngle = 0) => {
     circles.forEach((circle, i) => {
-      const pos = calculatePosition(startAngle + (i * CIRCLE_SPACING));
-      Object.assign(circle.style, { left: `${pos.left}px`, top: `${pos.top}px` });
+      const pos = calculatePosition(startAngle + i * CIRCLE_SPACING);
+      Object.assign(circle.style, {
+        left: `${pos.left}px`,
+        top: `${pos.top}px`,
+      });
     });
   };
 
@@ -106,18 +173,30 @@ const summaryData = t.summary;
 
   const updateContent = () => {
     const data = summaryData[currentIndex];
-    const elementsToAnimate = [els.heading, els.paragraphLines, els.titleWord, els.subtitleWord];
-    elementsToAnimate.forEach(el => { if (el) el.classList.add("fade-out"); });
+    const elementsToAnimate = [
+      els.heading,
+      els.paragraphLines,
+      els.titleWord,
+      els.subtitleWord,
+    ];
+    elementsToAnimate.forEach((el) => {
+      if (el) el.classList.add("fade-out");
+    });
     setTimeout(() => {
       if (circles[clickCount % summaryData.length]) {
-        circles[clickCount % summaryData.length].style.border = "1px solid #ffffff";
+        circles[clickCount % summaryData.length].style.border =
+          "1px solid #ffffff";
       }
-      if (els.heading) els.heading.innerHTML = `<div class="typewriter"><p>${data.heading}</p></div>`;
+      if (els.heading)
+        els.heading.innerHTML = `<div class="typewriter"><p>${data.heading}</p></div>`;
       if (els.paragraphLines) els.paragraphLines.innerHTML = data.text;
       if (els.titleWord) els.titleWord.innerHTML = data.title;
       if (els.subtitleWord) els.subtitleWord.innerHTML = "";
-      elementsToAnimate.forEach(el => {
-        if (el) { el.classList.remove("fade-out"); el.classList.add("fade-in"); }
+      elementsToAnimate.forEach((el) => {
+        if (el) {
+          el.classList.remove("fade-out");
+          el.classList.add("fade-in");
+        }
       });
       currentIndex = (currentIndex + 1) % summaryData.length;
       clickCount++;
@@ -138,42 +217,97 @@ const summaryData = t.summary;
     position: relative;
     background-color: var(--bg-theme-secondary);
   }
-  .displaycontentdiv { min-height: 350px; }
-  .center_Div { width: 100%; max-width: 800px; height: 100%; }
+  .displaycontentdiv {
+    min-height: 350px;
+  }
+  .center_Div {
+    width: 100%;
+    max-width: 800px;
+    height: 100%;
+  }
   .circleContainer {
-    display: flex; flex-direction: column;
-    justify-content: center; align-items: center;
-    width: 100%; height: 100%; position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
   }
   #center_circle {
-    position: relative; display: flex;
-    flex-direction: column; align-items: center; justify-content: center;
-    width: 200px; height: 200px; border-radius: 50%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
     background-color: rgba(255, 251, 251, 0.2);
   }
   .circle {
-    position: absolute; display: flex;
-    flex-direction: column; align-items: center; justify-content: center;
-    width: 100px; height: 100px; border-radius: 50%;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
     background-color: #333;
-    transition: top 1s ease, left 1s ease;
+    transition:
+      top 1s ease,
+      left 1s ease;
     z-index: 999;
   }
-  .circle svg { height: 50px; width: 50px; }
-  .typewriter p {
-    padding: 5px; font-size: 18px;
-    display: inline-block; max-width: 330px;
-    overflow: hidden; color: var(--text-theme-primary);
-    border-right: .15em solid transparent;
-    white-space: nowrap; letter-spacing: .15em;
-    animation: typing 1s steps(40, end), blink-caret .75s step-end;
+  .circle svg {
+    height: 50px;
+    width: 50px;
   }
-  @keyframes typing { from { width: 0; } to { width: 100%; } }
-  @keyframes blink-caret { from, to { border-color: transparent; } 50% { border-color: orange; } }
+  .typewriter p {
+    padding: 5px;
+    font-size: 18px;
+    display: inline-block;
+    max-width: 330px;
+    overflow: hidden;
+    color: var(--text-theme-primary);
+    border-right: 0.15em solid transparent;
+    white-space: nowrap;
+    letter-spacing: 0.15em;
+    animation:
+      typing 1s steps(40, end),
+      blink-caret 0.75s step-end;
+  }
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+  @keyframes blink-caret {
+    from,
+    to {
+      border-color: transparent;
+    }
+    50% {
+      border-color: orange;
+    }
+  }
 
   @media only screen and (max-width: 600px) {
-    #center_circle { width: 180px; height: 180px; background-color: #333; }
-    .circle { width: 70px; height: 70px; }
-    .summary-details { padding: 50px 0px; }
+    #center_circle {
+      width: 180px;
+      height: 180px;
+      background-color: #333;
+    }
+    .circle {
+      width: 70px;
+      height: 70px;
+    }
+    .summary-details {
+      padding: 50px 0px;
+    }
   }
 </style>
