@@ -9,9 +9,12 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const skills = t.skills;
-
-// Flatten all skill items for the interactive grid
-const allSkillItems = skills.categories.flatMap((cat: any) => cat.items);
+const yearsLabel = lang === "es" ? "años" : "years";
+const experienceLabel = lang === "es" ? "Experiencia en:" : "Experience at:";
+const clickHint =
+  lang === "es"
+    ? "Haz clic en una skill para ver detalles"
+    : "Click a skill to see details";
 ---
 
 <section class="skills flex-col-wise full-vh mt-5" id="skills">
@@ -20,20 +23,18 @@ const allSkillItems = skills.categories.flatMap((cat: any) => cat.items);
       <h1 class="mt-5 titleFont text-left shadow">{skills.title}</h1>
     </div>
     <div class="row p-0 m-0">
-      <div class="skillsContainer text-center col-lg-6 col-12">
+      <div class="skillsContainer text-center col-lg-8 col-12">
         {
           skills.categories.map((category: any) => (
-            <div class="skill-category mb-3">
-              <p
-                class="normalFont text-left mb-1"
-                style="font-size:14px; color: var(--text-theme-secondary); border-bottom: 1px solid #333; padding-bottom: 5px;"
-              >
+            <div class="skill-category">
+              <p class="skill-category-title normalFont text-left mb-1">
                 {category.name}
               </p>
-              <div class="row">
+              <div class="row g-2">
                 {category.items.map((item: any) => (
-                  <div class="col-lg-4 col-4 p-0">
-                    <p
+                  <div class="col-lg-3 col-4">
+                    <button
+                      type="button"
                       class="skillpara"
                       data-content={item.name}
                       data-description={item.description}
@@ -41,7 +42,7 @@ const allSkillItems = skills.categories.flatMap((cat: any) => cat.items);
                       data-years={item.years || ""}
                     >
                       {item.name}
-                    </p>
+                    </button>
                   </div>
                 ))}
               </div>
@@ -49,34 +50,26 @@ const allSkillItems = skills.categories.flatMap((cat: any) => cat.items);
           ))
         }
       </div>
-      <div class="skillsDiscription col-lg-6 col-12">
-        <div class="main-content active p-2" id="mainContent">
-          <h3>{allSkillItems[0]?.name}</h3>
-          {
-            allSkillItems[0]?.years && (
-              <span class="skill-years-badge">
-                {allSkillItems[0].years} {lang === "es" ? "años" : "years"}
-              </span>
-            )
-          }
-          <p class="normalFont text-justify mt-2">
-            {allSkillItems[0]?.description}
-          </p>
-          {
-            allSkillItems[0]?.workplaces &&
-              allSkillItems[0].workplaces.length > 0 && (
-                <div class="skill-workplaces">
-                  <h6>
-                    {lang === "es" ? "Experiencia en:" : "Experience at:"}
-                  </h6>
-                  <ul>
-                    {allSkillItems[0].workplaces.map((wp: string) => (
-                      <li>{wp}</li>
-                    ))}
-                  </ul>
-                </div>
-              )
-          }
+      <div class="col-lg-4 col-12">
+        <div
+          class="skillsDetail"
+          id="skillsDetail"
+          data-years-label={yearsLabel}
+          data-exp-label={experienceLabel}
+        >
+          <div class="skill-detail-placeholder" id="skillPlaceholder">
+            <span class="placeholder-icon">⌘</span>
+            <p>{clickHint}</p>
+          </div>
+          <div class="skill-detail-content" id="skillDetailContent">
+            <h4 id="skillName"></h4>
+            <span class="skill-years-badge" id="skillYears"></span>
+            <p class="normalFont text-justify mt-2" id="skillDesc"></p>
+            <div class="skill-workplaces" id="skillWorkplaces">
+              <h6 id="skillExpLabel"></h6>
+              <ul id="skillWpList"></ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -84,26 +77,46 @@ const allSkillItems = skills.categories.flatMap((cat: any) => cat.items);
 </section>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const mainContent = document.getElementById("mainContent");
-    const boxes = Array.from(document.querySelectorAll(".skillpara"));
+  function initSkills() {
+    const container = document.querySelector(".skillsContainer");
+    const detailPanel = document.getElementById("skillsDetail");
+    const placeholder = document.getElementById("skillPlaceholder");
+    const content = document.getElementById("skillDetailContent");
+    const skillName = document.getElementById("skillName");
+    const skillYears = document.getElementById("skillYears") as HTMLElement | null;
+    const skillDesc = document.getElementById("skillDesc");
+    const skillWorkplaces = document.getElementById("skillWorkplaces") as HTMLElement | null;
+    const skillExpLabel = document.getElementById("skillExpLabel");
+    const skillWpList = document.getElementById("skillWpList");
+
+    if (!container || !detailPanel || !content || !placeholder) return;
+
+    // Prevent duplicate listeners
+    if (container.getAttribute("data-skills-init") === "true") return;
+    container.setAttribute("data-skills-init", "true");
+
+    const yearsLabel = detailPanel.getAttribute("data-years-label") || "years";
+    const expLabel = detailPanel.getAttribute("data-exp-label") || "Experience at:";
+
     let activeBox: HTMLElement | null = null;
 
-    const showContent = (e: Event) => {
-      const target = e.target as HTMLElement;
+    // Use event delegation on the container
+    container.addEventListener("click", (e: Event) => {
+      const target = (e.target as HTMLElement).closest(".skillpara") as HTMLElement | null;
+      if (!target) return;
+
       const name = target.getAttribute("data-content");
       const description = target.getAttribute("data-description");
       const workplacesRaw = target.getAttribute("data-workplaces");
       const years = target.getAttribute("data-years");
 
-      // Toggle: if clicking the same skill, deselect it
+      // Toggle: if clicking the same skill, deselect
       if (activeBox === target) {
         activeBox.classList.remove("skill-active");
         activeBox = null;
-        if (mainContent) {
-          mainContent.innerHTML = "";
-          mainContent.classList.remove("active");
-        }
+        content.classList.remove("visible");
+        placeholder.classList.remove("hidden");
+        detailPanel.classList.remove("has-content");
         return;
       }
 
@@ -112,113 +125,184 @@ const allSkillItems = skills.categories.flatMap((cat: any) => cat.items);
       activeBox = target;
       target.classList.add("skill-active");
 
-      if (mainContent && name && description) {
+      if (name && description) {
+        if (skillName) skillName.textContent = name;
+
+        if (skillYears) {
+          if (years) {
+            skillYears.textContent = `${years} ${yearsLabel}`;
+            skillYears.style.display = "inline-block";
+          } else {
+            skillYears.style.display = "none";
+          }
+        }
+
+        if (skillDesc) skillDesc.textContent = description;
+
         let workplaces: string[] = [];
-        try {
-          workplaces = JSON.parse(workplacesRaw || "[]");
-        } catch {
-          workplaces = [];
+        try { workplaces = JSON.parse(workplacesRaw || "[]"); } catch { workplaces = []; }
+
+        if (skillWorkplaces && skillWpList && skillExpLabel) {
+          if (workplaces.length > 0) {
+            skillExpLabel.textContent = expLabel;
+            skillWpList.innerHTML = workplaces.map((wp: string) => `<li>${wp}</li>`).join("");
+            skillWorkplaces.style.display = "block";
+          } else {
+            skillWorkplaces.style.display = "none";
+          }
         }
 
-        let html = `<h3>${name}</h3>`;
-        if (years) {
-          html += `<span class="skill-years-badge">${years} ${document.documentElement.lang === "es" ? "años" : "years"}</span>`;
-        }
-        html += `<p class="normalFont text-justify mt-2">${description}</p>`;
-        if (workplaces.length > 0) {
-          html += `<div class="skill-workplaces"><h6>${document.documentElement.lang === "es" ? "Experiencia en:" : "Experience at:"}</h6><ul>`;
-          workplaces.forEach((wp: string) => {
-            html += `<li>${wp}</li>`;
-          });
-          html += `</ul></div>`;
-        }
-
-        mainContent.innerHTML = html;
-        mainContent.classList.add("active");
+        placeholder.classList.add("hidden");
+        content.classList.add("visible");
+        detailPanel.classList.add("has-content");
       }
-    };
-
-    boxes.forEach((box) => {
-      box.addEventListener("click", showContent);
     });
+  }
+
+  // Run on load — defer to ensure DOM is fully ready
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initSkills);
+  } else {
+    initSkills();
+  }
+  // Support Astro View Transitions
+  document.addEventListener("astro:after-swap", () => {
+    // Reset init flag so it re-initializes after swap
+    const c = document.querySelector(".skillsContainer");
+    if (c) c.removeAttribute("data-skills-init");
+    initSkills();
   });
 </script>
 
 <style>
   .skill-category {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
-  .skillsContainer div p {
-    margin: 5px 5px;
-    padding: 15px;
+  .skill-category-title {
+    font-size: 13px;
+    color: var(--text-theme-secondary);
+    border-bottom: 1px solid #333;
+    padding-bottom: 5px;
+    margin-bottom: 6px !important;
+  }
+  .skillpara {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 10px 8px;
     cursor: pointer;
     background-color: var(--bg-theme-secondary);
+    border: 1px solid transparent;
     border-radius: 5px;
     color: var(--text-theme-secondary);
-    font-size: 14px;
+    font-size: 13px;
+    font-family: inherit;
+    text-align: center;
+    transition: all 0.2s ease;
   }
-  .skillsContainer div p:hover {
-    background: rgb(255, 255, 255);
+  .skillpara:hover {
     background: linear-gradient(
       90deg,
-      rgba(255, 255, 255, 0.093) 0%,
-      rgba(0, 0, 0, 1) 30%,
-      rgba(0, 0, 0, 1) 70%,
-      rgba(255, 255, 255, 0.208) 100%
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(40, 40, 40, 1) 30%,
+      rgba(40, 40, 40, 1) 70%,
+      rgba(255, 255, 255, 0.12) 100%
     );
   }
-  .skillsContainer div p.skill-active {
+  .skillpara.skill-active {
     background: linear-gradient(
       90deg,
-      rgba(255, 255, 255, 0.15) 0%,
-      rgba(50, 50, 50, 1) 30%,
-      rgba(50, 50, 50, 1) 70%,
-      rgba(255, 255, 255, 0.25) 100%
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(55, 55, 55, 1) 30%,
+      rgba(55, 55, 55, 1) 70%,
+      rgba(255, 255, 255, 0.18) 100%
     );
     border-left: 3px solid #fff;
+    color: #fff;
   }
-  .skillsDiscription {
-    margin: 5px 0px;
+
+  /* Detail panel */
+  .skillsDetail {
+    position: sticky;
+    top: 100px;
+    border-radius: 8px;
     padding: 20px;
-    border-radius: 5px;
-    background-color: rgba(188, 186, 186, 0.126);
-    min-height: 300px;
+    margin-top: 28px;
+    min-height: 0;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
   }
-  .skillsDiscription div {
-    margin: 5px 5px;
-    padding: 5px;
-    opacity: 0;
+  .skillsDetail.has-content {
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* Placeholder */
+  .skill-detail-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 10px;
+    opacity: 0.4;
     transition: opacity 0.3s ease;
-    background-color: rgba(188, 186, 186, 0.126);
+  }
+  .skill-detail-placeholder.hidden {
+    display: none;
+  }
+  .placeholder-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
     color: var(--text-theme-secondary);
   }
-  .main-content {
-    border-radius: 5px;
-    height: 100%;
+  .skill-detail-placeholder p {
+    font-size: 13px;
+    color: var(--text-theme-secondary);
+    margin: 0;
+    text-align: center;
   }
-  .main-content.active {
+
+  /* Content */
+  .skill-detail-content {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    color: var(--text-theme-secondary);
+  }
+  .skill-detail-content.visible {
+    display: block;
     opacity: 1;
   }
-  .skill-years-badge {
-    display: inline-block;
-    background-color: rgba(255, 255, 255, 0.15);
-    color: #fff;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
+  .skill-detail-content h4 {
+    font-size: 18px;
+    font-weight: 700;
     margin-bottom: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #fff;
+  }
+
+  .skill-years-badge {
+    display: none;
+    background-color: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
   }
   .skill-workplaces {
+    display: none;
     margin-top: 12px;
     padding-top: 12px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
   .skill-workplaces h6 {
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.6);
-    margin-bottom: 8px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
   .skill-workplaces ul {
     list-style: none;
@@ -226,21 +310,34 @@ const allSkillItems = skills.categories.flatMap((cat: any) => cat.items);
     margin: 0;
   }
   .skill-workplaces ul li {
-    padding: 4px 0;
-    font-size: 14px;
+    padding: 3px 0;
+    font-size: 13px;
     color: var(--text-theme-secondary);
     position: relative;
-    padding-left: 16px;
+    padding-left: 14px;
   }
   .skill-workplaces ul li::before {
     content: "▸";
     position: absolute;
     left: 0;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.35);
+  }
+
+  /* Mobile */
+  @media only screen and (max-width: 991px) {
+    .skillsDetail {
+      position: relative;
+      top: 0;
+      margin-top: 16px;
+    }
   }
   @media only screen and (max-width: 600px) {
     .skills {
       padding: 50px 0px;
+    }
+    .skillpara {
+      font-size: 12px;
+      padding: 8px 4px;
     }
   }
 </style>

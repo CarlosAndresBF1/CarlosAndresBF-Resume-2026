@@ -19,10 +19,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Copy i18n files
+      - name: Write i18n files from secrets
         run: |
-          cp src/i18n/en.example.json src/i18n/en.json
-          cp src/i18n/es.example.json src/i18n/es.json
+          echo '${{ secrets.I18N_EN }}' > src/i18n/en.json
+          echo '${{ secrets.I18N_ES }}' > src/i18n/es.json
+          # Fallback to examples if secrets are not set
+          [ -s src/i18n/en.json ] || cp src/i18n/en.example.json src/i18n/en.json
+          [ -s src/i18n/es.json ] || cp src/i18n/es.example.json src/i18n/es.json
 
       - name: Run tests
         run: npm test

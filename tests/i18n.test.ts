@@ -77,8 +77,42 @@ describe("i18n Translation Files", () => {
       expect(es.hero.marquee.length).toBeGreaterThan(5);
     });
 
-    it("should have at least 5 experience jobs", () => {
-      expect(en.experience.jobs.length).toBeGreaterThanOrEqual(5);
+    it("should have at least 7 experience jobs", () => {
+      expect(en.experience.jobs.length).toBeGreaterThanOrEqual(7);
+      expect(es.experience.jobs.length).toBeGreaterThanOrEqual(7);
+    });
+
+    it("should have BLOSSOM as the first job", () => {
+      expect(en.experience.jobs[0].company).toBe("BLOSSOM");
+      expect(es.experience.jobs[0].company).toBe("BLOSSOM");
+    });
+
+    it("should have INMOV - AX MARKETING as the second job", () => {
+      expect(en.experience.jobs[1].company).toBe("INMOV - AX MARKETING");
+      expect(es.experience.jobs[1].company).toBe("INMOV - AX MARKETING");
+    });
+
+    it("should have SENA INSTITUTE as the third job", () => {
+      expect(en.experience.jobs[2].company).toBe("SENA INSTITUTE");
+      expect(es.experience.jobs[2].company).toBe("SENA INSTITUTE");
+    });
+
+    it("SENA INSTITUTE stack should include Laravel, Blade, React", () => {
+      const senaEn = en.experience.jobs[2];
+      const senaEs = es.experience.jobs[2];
+      for (const tech of ["Laravel", "Blade", "React"]) {
+        expect(senaEn.stack).toContain(tech);
+        expect(senaEs.stack).toContain(tech);
+      }
+    });
+
+    it("job numbers should be sequential 01-07", () => {
+      en.experience.jobs.forEach((job: any, i: number) => {
+        expect(job.number).toBe(String(i + 1).padStart(2, "0"));
+      });
+      es.experience.jobs.forEach((job: any, i: number) => {
+        expect(job.number).toBe(String(i + 1).padStart(2, "0"));
+      });
     });
   });
 
