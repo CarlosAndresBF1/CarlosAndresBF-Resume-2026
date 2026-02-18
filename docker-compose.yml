@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: portfolio
     ports:
       - "4321:4321"
     environment:
@@ -10,6 +11,16 @@ services:
       - PORT=4321
       - NODE_ENV=production
     restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
     healthcheck:
       test:
         [
