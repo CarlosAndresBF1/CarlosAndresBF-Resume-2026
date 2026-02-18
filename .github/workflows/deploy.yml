@@ -53,20 +53,36 @@ jobs:
     steps:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
+        env:
+          I18N_EN: ${{ secrets.I18N_EN }}
+          I18N_ES: ${{ secrets.I18N_ES }}
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT || 22 }}
+          envs: I18N_EN,I18N_ES
           script: |
             cd ${{ secrets.VPS_PROJECT_PATH || '~/portfolio' }}
 
             # Pull latest changes
             git pull origin main
 
-            # Copy i18n files if they don't exist
-            [ -f src/i18n/en.json ] || cp src/i18n/en.example.json src/i18n/en.json
-            [ -f src/i18n/es.json ] || cp src/i18n/es.example.json src/i18n/es.json
+            # Write i18n files from secrets
+            if echo "$I18N_EN" | python3 -c "import sys,json; json.load(sys.stdin)" 2>/dev/null; then
+              echo "$I18N_EN" > src/i18n/en.json
+              echo "✅ en.json written from secret"
+            else
+              echo "⚠️ I18N_EN secret not valid, using example"
+              cp src/i18n/en.example.json src/i18n/en.json
+            fi
+            if echo "$I18N_ES" | python3 -c "import sys,json; json.load(sys.stdin)" 2>/dev/null; then
+              echo "$I18N_ES" > src/i18n/es.json
+              echo "✅ es.json written from secret"
+            else
+              echo "⚠️ I18N_ES secret not valid, using example"
+              cp src/i18n/es.example.json src/i18n/es.json
+            fi
 
             # Rebuild and restart with Docker
             docker compose down
