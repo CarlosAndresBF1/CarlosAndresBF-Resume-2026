@@ -22,3 +22,7 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Personal i18n data (contains personal information)
+src/i18n/en.json
+src/i18n/es.json
