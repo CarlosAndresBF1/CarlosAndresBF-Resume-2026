@@ -1,12 +1,5 @@
 # Portfolio — Astro Implementation
 
-An **Astro** (v5, SSR) implementation based on a fork of the original portfolio template by [Prasad Lakhara](https://prasadlakhara.github.io/portfolio-template/).
-
-## Credits
-
-- **Original template:** [prasadlakhara/portfolio-template](https://prasadlakhara.github.io/portfolio-template/) — HTML/CSS/JS portfolio template.
-- **Astro implementation:** This project adapts the original template into an Astro-based application with server-side rendering, i18n (EN/ES), Docker support, and interactive skills with workplace data.
-
 ## Features
 
 - Astro v5 with SSR (`@astrojs/node` adapter)
@@ -175,6 +168,15 @@ Get a free SSL certificate with:
 sudo apt install certbot python3-certbot-nginx
 sudo certbot --nginx -d yourdomain.com
 ```
+
+
+An **Astro** (v5, SSR) implementation based on a fork of the original portfolio template by [Prasad Lakhara](https://prasadlakhara.github.io/portfolio-template/).
+
+## Credits
+
+- **Original template:** [prasadlakhara/portfolio-template](https://prasadlakhara.github.io/portfolio-template/) — HTML/CSS/JS portfolio template.
+- **Astro implementation:** This project adapts the original template into an Astro-based application with server-side rendering, i18n (EN/ES), Docker support, and interactive skills with workplace data.
+
 
 ## License
 
