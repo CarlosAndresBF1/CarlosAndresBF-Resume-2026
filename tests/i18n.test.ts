@@ -132,14 +132,14 @@ describe("i18n Translation Files", () => {
       expect(es.experience.jobs.length).toBeGreaterThanOrEqual(7);
     });
 
-    it("should have BLOSSOM as the first job", () => {
-      expect(en.experience.jobs[0].company).toBe("BLOSSOM");
-      expect(es.experience.jobs[0].company).toBe("BLOSSOM");
+    it("should have INMOV - AX MARKETING as the first job", () => {
+      expect(en.experience.jobs[0].company).toBe("INMOV - AX MARKETING");
+      expect(es.experience.jobs[0].company).toBe("INMOV - AX MARKETING");
     });
 
-    it("should have INMOV - AX MARKETING as the second job", () => {
-      expect(en.experience.jobs[1].company).toBe("INMOV - AX MARKETING");
-      expect(es.experience.jobs[1].company).toBe("INMOV - AX MARKETING");
+    it("should have BLOSSOM as the second job", () => {
+      expect(en.experience.jobs[1].company).toBe("BLOSSOM");
+      expect(es.experience.jobs[1].company).toBe("BLOSSOM");
     });
 
     it("should have SENA INSTITUTE as the third job", () => {
@@ -167,28 +167,31 @@ describe("i18n Translation Files", () => {
     });
   });
 
-  describe.skipIf(isExampleData)("Skill categories contain PHPUnit and Jest", () => {
-    const enSkillNames = en.skills.categories.flatMap((c: any) =>
-      c.items.map((i: any) => i.name),
-    );
-    const esSkillNames = es.skills.categories.flatMap((c: any) =>
-      c.items.map((i: any) => i.name),
-    );
+  describe.skipIf(isExampleData)(
+    "Skill categories contain PHPUnit and Jest",
+    () => {
+      const enSkillNames = en.skills.categories.flatMap((c: any) =>
+        c.items.map((i: any) => i.name),
+      );
+      const esSkillNames = es.skills.categories.flatMap((c: any) =>
+        c.items.map((i: any) => i.name),
+      );
 
-    it("EN skills should include PHPUnit", () => {
-      expect(enSkillNames).toContain("PHPUnit");
-    });
+      it("EN skills should include PHPUnit", () => {
+        expect(enSkillNames).toContain("PHPUnit");
+      });
 
-    it("EN skills should include Jest", () => {
-      expect(enSkillNames).toContain("Jest");
-    });
+      it("EN skills should include Jest", () => {
+        expect(enSkillNames).toContain("Jest");
+      });
 
-    it("ES skills should include PHPUnit", () => {
-      expect(esSkillNames).toContain("PHPUnit");
-    });
+      it("ES skills should include PHPUnit", () => {
+        expect(esSkillNames).toContain("PHPUnit");
+      });
 
-    it("ES skills should include Jest", () => {
-      expect(esSkillNames).toContain("Jest");
-    });
-  });
+      it("ES skills should include Jest", () => {
+        expect(esSkillNames).toContain("Jest");
+      });
+    },
+  );
 });

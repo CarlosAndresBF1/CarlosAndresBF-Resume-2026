@@ -67,14 +67,14 @@ npm run dev
 
 Open [http://localhost:4321](http://localhost:4321).
 
-### 4. Build for production
+### 5. Build for production
 
 ```sh
 npm run build
 node ./dist/server/entry.mjs
 ```
 
-### 5. Docker
+### 6. Docker
 
 ```sh
 docker compose up --build
@@ -148,6 +148,12 @@ This project includes a GitHub Actions workflow (`.github/workflows/deploy.yml`)
    | `VPS_SSH_KEY`     | Private SSH key (the full content of `id_ed25519`)|
    | `VPS_PORT`        | SSH port (optional, defaults to `22`)            |
    | `VPS_PROJECT_PATH`| Project path on VPS (optional, defaults to `~/portfolio`) |
+   | `SMTP_HOST`       | SMTP server hostname (e.g. `smtp.gmail.com`)     |
+   | `SMTP_PORT`       | SMTP port (e.g. `587`)                           |
+   | `SMTP_SECURE`     | Use SSL/TLS (`true` or `false`)                  |
+   | `SMTP_USER`       | SMTP auth email address                          |
+   | `SMTP_PASS`       | SMTP auth password (App Password for Gmail)      |
+   | `CONTACT_TO_EMAIL`| Recipient email for contact form submissions     |
 
 4. **Generate a deploy SSH key** (if you don't have one):
 
