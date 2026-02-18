@@ -37,6 +37,8 @@ const allSkillItems = skills.categories.flatMap((cat: any) => cat.items);
                       class="skillpara"
                       data-content={item.name}
                       data-description={item.description}
+                      data-workplaces={JSON.stringify(item.workplaces || [])}
+                      data-years={item.years || ""}
                     >
                       {item.name}
                     </p>
