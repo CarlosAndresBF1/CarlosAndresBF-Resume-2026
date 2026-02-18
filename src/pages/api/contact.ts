@@ -6,21 +6,35 @@ const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 const RATE_LIMIT_MAX = 5; // max requests
 const RATE_LIMIT_WINDOW = 60_000; // per 60 seconds
 
-// SMTP transporter (created once, reused across requests)
-const transporter = nodemailer.createTransport({
-  host: import.meta.env.SMTP_HOST,
-  port: Number(import.meta.env.SMTP_PORT) || 587,
-  secure: import.meta.env.SMTP_SECURE === "true",
-  auth: {
-    user: import.meta.env.SMTP_USER,
-    pass: import.meta.env.SMTP_PASS,
-  },
-});
+// Create transporter lazily so process.env is read at runtime (not build time)
+let _transporter: nodemailer.Transporter | null = null;
 
-const CONTACT_TO_EMAIL =
-  import.meta.env.CONTACT_TO_EMAIL || "carlosandresbeltran89@gmail.com";
-const CONTACT_FROM_EMAIL =
-  import.meta.env.CONTACT_FROM_EMAIL || import.meta.env.SMTP_USER;
+function getTransporter(): nodemailer.Transporter {
+  if (!_transporter) {
+    const host = process.env.SMTP_HOST;
+    const user = process.env.SMTP_USER;
+    const pass = process.env.SMTP_PASS;
+
+    if (!host || !user || !pass) {
+      throw new Error(
+        `Missing SMTP configuration. SMTP_HOST=${host ? "set" : "missing"}, SMTP_USER=${user ? "set" : "missing"}, SMTP_PASS=${pass ? "set" : "missing"}`,
+      );
+    }
+
+    _transporter = nodemailer.createTransport({
+      host,
+      port: Number(process.env.SMTP_PORT) || 587,
+      secure: process.env.SMTP_SECURE === "true",
+      auth: { user, pass },
+    });
+  }
+  return _transporter;
+}
+
+const getContactTo = () =>
+  process.env.CONTACT_TO_EMAIL || "carlosandresbeltran89@gmail.com";
+const getContactFrom = () =>
+  process.env.CONTACT_FROM_EMAIL || process.env.SMTP_USER;
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
@@ -112,9 +126,10 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     const safeMessage = sanitize(message);
 
     // Send email via SMTP
+    const transporter = getTransporter();
     await transporter.sendMail({
-      from: `"Portafolio - ${safeName}" <${CONTACT_FROM_EMAIL}>`,
-      to: CONTACT_TO_EMAIL,
+      from: `"Portafolio - ${safeName}" <${getContactFrom()}>`,
+      to: getContactTo(),
       replyTo: safeEmail,
       subject: `[Portafolio] ${safeSubject}`,
       text: `Nombre: ${safeName}\nEmail: ${safeEmail}\n\n${safeMessage}`,
