@@ -1,6 +1,6 @@
 ---
-import type { Lang } from '../i18n';
-import { useTranslations } from '../i18n';
+import type { Lang } from "../i18n";
+import { useTranslations } from "../i18n";
 
 interface Props {
   lang: Lang;
@@ -13,7 +13,13 @@ const t = useTranslations(lang);
 <footer class="flex-row-wise py-4">
   <a href="#">{t.footer.name}</a>
   <span>
-    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="#a8a8a8" viewBox="0 0 256 256">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="48"
+      height="48"
+      fill="#a8a8a8"
+      viewBox="0 0 256 256"
+    >
       <path d="M140,128a12,12,0,1,1-12-12A12,12,0,0,1,140,128Z"></path>
     </svg>
   </span>

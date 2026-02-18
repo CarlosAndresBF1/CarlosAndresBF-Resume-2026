@@ -1,23 +1,20 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import Navbar from '../../components/Navbar.astro';
-import Hero from '../../components/Hero.astro';
-import About from '../../components/About.astro';
-import Projects from '../../components/Projects.astro';
-import Experience from '../../components/Experience.astro';
-import Skills from '../../components/Skills.astro';
-import Contact from '../../components/Contact.astro';
-import Footer from '../../components/Footer.astro';
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
+import Hero from "../../components/Hero.astro";
+import About from "../../components/About.astro";
+import Projects from "../../components/Projects.astro";
+import Experience from "../../components/Experience.astro";
+import Skills from "../../components/Skills.astro";
+import Contact from "../../components/Contact.astro";
+import Footer from "../../components/Footer.astro";
 
 export function getStaticPaths() {
-  return [
-    { params: { lang: 'en' } },
-    { params: { lang: 'es' } },
-  ];
+  return [{ params: { lang: "en" } }, { params: { lang: "es" } }];
 }
 
 const { lang } = Astro.params;
-const validLang = (lang === 'en' || lang === 'es') ? lang : 'en';
+const validLang = lang === "en" || lang === "es" ? lang : "en";
 ---
 
 <Layout lang={validLang}>
