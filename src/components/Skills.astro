@@ -1,0 +1,115 @@
+---
+import type { Lang } from '../i18n';
+import { useTranslations } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const skills = t.skills;
+
+// Flatten all skill items for the interactive grid
+const allSkillItems = skills.categories.flatMap((cat: any) => cat.items);
+---
+
+<section class="skills flex-col-wise full-vh mt-5" id="skills">
+  <div class="container">
+    <div>
+      <h1 class="mt-5 titleFont text-left shadow">{skills.title}</h1>
+    </div>
+    <div class="row p-0 m-0">
+      <div class="skillsContainer text-center col-lg-6 col-12">
+        {skills.categories.map((category: any) => (
+          <div class="skill-category mb-3">
+            <p class="normalFont text-left mb-1" style="font-size:14px; color: var(--text-theme-secondary); border-bottom: 1px solid #333; padding-bottom: 5px;">
+              {category.name}
+            </p>
+            <div class="row">
+              {category.items.map((item: any) => (
+                <div class="col-lg-4 col-4 p-0">
+                  <p class="skillpara" data-content={item.name} data-description={item.description}>{item.name}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div class="skillsDiscription col-lg-6 col-12">
+        <div class="main-content active p-2" id="mainContent">
+          <h3>{allSkillItems[0]?.name}</h3>
+          <p class="normalFont text-justify">{allSkillItems[0]?.description}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const mainContent = document.getElementById('mainContent');
+    const boxes = Array.from(document.querySelectorAll('.skillpara'));
+
+    const showContent = (e: Event) => {
+      const target = e.target as HTMLElement;
+      const name = target.getAttribute('data-content');
+      const description = target.getAttribute('data-description');
+      if (mainContent && name && description) {
+        mainContent.innerHTML = `<h3>${name}</h3><p class="normalFont text-justify">${description}</p>`;
+        mainContent.classList.add('active');
+      }
+    };
+
+    const hideContent = () => {
+      if (mainContent) mainContent.classList.remove('active');
+    };
+
+    boxes.forEach(box => {
+      box.addEventListener('mouseover', showContent);
+      box.addEventListener('mouseout', hideContent);
+    });
+  });
+</script>
+
+<style>
+  .skill-category { margin-bottom: 10px; }
+  .skillsContainer div p {
+    margin: 5px 5px;
+    padding: 15px;
+    cursor: pointer;
+    background-color: var(--bg-theme-secondary);
+    border-radius: 5px;
+    color: var(--text-theme-secondary);
+    font-size: 14px;
+  }
+  .skillsContainer div p:hover {
+    background: rgb(255, 255, 255);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.093) 0%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 1) 70%, rgba(255, 255, 255, 0.208) 100%);
+  }
+  .skillsDiscription {
+    margin: 5px 0px;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: rgba(188, 186, 186, 0.126);
+    min-height: 300px;
+  }
+  .skillsDiscription div {
+    margin: 5px 5px;
+    padding: 5px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    background-color: rgba(188, 186, 186, 0.126);
+    color: var(--text-theme-secondary);
+  }
+  .main-content {
+    border-radius: 5px;
+    height: 100%;
+  }
+  .main-content.active {
+    opacity: 1;
+  }
+  @media only screen and (max-width: 600px) {
+    .skills { padding: 50px 0px; }
+  }
+</style>

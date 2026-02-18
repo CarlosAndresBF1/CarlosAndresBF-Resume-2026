@@ -1,0 +1,138 @@
+---
+import type { Lang } from '../i18n';
+import { useTranslations } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section class="projects flex-col-wise full-vh" id="projects">
+  <div class="container flex-col-wise">
+    <div class="projectContainer row g-3">
+      <div class="col-lg-12 col-12">
+        <span class="titleFont mx-2">{lang === 'es' ? 'Proyectos' : 'Projects'}</span>
+      </div>
+      <div class="projectItem col-lg-8 col-12">
+        <div class="card">
+          <div class="card-body d-flex flex-column justify-content-end p-4">
+            <h3 class="normalFont" style="font-size:20px;">INMOV Platform</h3>
+            <p class="normalFont" style="font-size:14px; color: var(--text-theme-secondary);">
+              {lang === 'es' 
+                ? 'Plataforma empresarial con APIs REST, microservicios y aplicaciones híbridas. Integraciones con Twilio, Sendgrid y Firebase.'
+                : 'Enterprise platform with REST APIs, microservices and hybrid applications. Integrations with Twilio, Sendgrid, and Firebase.'}
+            </p>
+            <div class="d-flex flex-wrap gap-1">
+              <span class="bubbleData normalFont">Laravel</span>
+              <span class="bubbleData normalFont">NestJS</span>
+              <span class="bubbleData normalFont">Angular</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="projectItem col-lg-4 col-6">
+        <div class="card">
+          <div class="card-body d-flex flex-column justify-content-end p-4">
+            <h3 class="normalFont" style="font-size:20px;">CI/CD Pipeline</h3>
+            <p class="normalFont" style="font-size:14px; color: var(--text-theme-secondary);">
+              {lang === 'es'
+                ? 'Pipeline de integración continua con Bitbucket, reduciendo tiempos de despliegue en un 30%.'
+                : 'Continuous integration pipeline with Bitbucket, reducing deployment times by 30%.'}
+            </p>
+            <div class="d-flex flex-wrap gap-1">
+              <span class="bubbleData normalFont">Bitbucket</span>
+              <span class="bubbleData normalFont">Docker</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="projectItem col-lg-4 col-6">
+        <div class="card">
+          <div class="card-body d-flex flex-column justify-content-end p-4">
+            <h3 class="normalFont" style="font-size:20px;">
+              {lang === 'es' ? 'Plataforma Educativa' : 'Education Platform'}
+            </h3>
+            <p class="normalFont" style="font-size:14px; color: var(--text-theme-secondary);">
+              {lang === 'es'
+                ? 'Material didáctico y proyectos aplicados para formación técnica en SENA.'
+                : 'Teaching materials and applied projects for technical training at SENA.'}
+            </p>
+            <div class="d-flex flex-wrap gap-1">
+              <span class="bubbleData normalFont">C#</span>
+              <span class="bubbleData normalFont">PHP</span>
+              <span class="bubbleData normalFont">MySQL</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="projectItem col-lg-4 col-6">
+        <div class="card">
+          <div class="card-body d-flex flex-column justify-content-end p-4">
+            <h3 class="normalFont" style="font-size:20px;">
+              {lang === 'es' ? 'Apps Híbridas' : 'Hybrid Apps'}
+            </h3>
+            <p class="normalFont" style="font-size:14px; color: var(--text-theme-secondary);">
+              {lang === 'es'
+                ? 'Desarrollo de aplicaciones móviles híbridas con Cordova y Angular.'
+                : 'Hybrid mobile application development with Cordova and Angular.'}
+            </p>
+            <div class="d-flex flex-wrap gap-1">
+              <span class="bubbleData normalFont">Cordova</span>
+              <span class="bubbleData normalFont">Angular</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="projectItem col-lg-4 col-6">
+        <div class="card">
+          <div class="card-body d-flex flex-column justify-content-end p-4">
+            <h3 class="normalFont" style="font-size:20px;">
+              {lang === 'es' ? 'Soluciones Corporativas' : 'Corporate Solutions'}
+            </h3>
+            <p class="normalFont" style="font-size:14px; color: var(--text-theme-secondary);">
+              {lang === 'es'
+                ? 'Aplicaciones web a medida con CodeIgniter para clientes corporativos.'
+                : 'Custom web applications with CodeIgniter for corporate clients.'}
+            </p>
+            <div class="d-flex flex-wrap gap-1">
+              <span class="bubbleData normalFont">PHP</span>
+              <span class="bubbleData normalFont">CodeIgniter</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .projects {
+    background-color: var(--bg-theme-primary);
+  }
+  .projectContainer { width: 100%; }
+  .projectItem { min-height: 200px; }
+  .card {
+    background-color: var(--bg-theme-secondary);
+    height: 100%;
+    border-radius: 10px;
+    margin-top: 10px;
+    border: 1px solid #ffffff0d;
+    transition: border-color 0.3s ease;
+  }
+  .card:hover {
+    border-color: #ffffff2a;
+  }
+  .bubbleData {
+    display: inline-block;
+    padding: 2px 10px;
+    border: 1px solid #949494;
+    border-radius: 5px;
+    font-size: 12px !important;
+  }
+  @media only screen and (max-width: 600px) {
+    .projects { padding: 50px 0px; }
+  }
+</style>
