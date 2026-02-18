@@ -1,9 +1,26 @@
 import type { APIRoute } from "astro";
+import nodemailer from "nodemailer";
 
 // Rate limiting store (in-memory, per server instance)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 const RATE_LIMIT_MAX = 5; // max requests
 const RATE_LIMIT_WINDOW = 60_000; // per 60 seconds
+
+// SMTP transporter (created once, reused across requests)
+const transporter = nodemailer.createTransport({
+  host: import.meta.env.SMTP_HOST,
+  port: Number(import.meta.env.SMTP_PORT) || 587,
+  secure: import.meta.env.SMTP_SECURE === "true",
+  auth: {
+    user: import.meta.env.SMTP_USER,
+    pass: import.meta.env.SMTP_PASS,
+  },
+});
+
+const CONTACT_TO_EMAIL =
+  import.meta.env.CONTACT_TO_EMAIL || "carlosandresbeltran89@gmail.com";
+const CONTACT_FROM_EMAIL =
+  import.meta.env.CONTACT_FROM_EMAIL || import.meta.env.SMTP_USER;
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
@@ -94,13 +111,26 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     const safeSubject = sanitize(subject);
     const safeMessage = sanitize(message);
 
-    // Log the contact submission (replace with actual email service in production)
-    console.log("=== New Contact Form Submission ===");
-    console.log(`Name: ${safeName}`);
-    console.log(`Email: ${safeEmail}`);
-    console.log(`Subject: ${safeSubject}`);
-    console.log(`Message: ${safeMessage}`);
-    console.log("==================================");
+    // Send email via SMTP
+    await transporter.sendMail({
+      from: `"Portafolio - ${safeName}" <${CONTACT_FROM_EMAIL}>`,
+      to: CONTACT_TO_EMAIL,
+      replyTo: safeEmail,
+      subject: `[Portafolio] ${safeSubject}`,
+      text: `Nombre: ${safeName}\nEmail: ${safeEmail}\n\n${safeMessage}`,
+      html: `
+        <h2>Nuevo mensaje desde tu portafolio</h2>
+        <p><strong>Nombre:</strong> ${safeName}</p>
+        <p><strong>Email:</strong> ${safeEmail}</p>
+        <p><strong>Asunto:</strong> ${safeSubject}</p>
+        <hr />
+        <p>${safeMessage.replace(/\n/g, "<br />")}</p>
+      `,
+    });
+
+    console.log(
+      `Contact email sent from ${safeEmail} - Subject: ${safeSubject}`,
+    );
 
     return new Response(
       JSON.stringify({ success: true, message: "Message received" }),

@@ -56,12 +56,18 @@ jobs:
         env:
           I18N_EN: ${{ secrets.I18N_EN }}
           I18N_ES: ${{ secrets.I18N_ES }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_SECURE: ${{ secrets.SMTP_SECURE }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          CONTACT_TO_EMAIL: ${{ secrets.CONTACT_TO_EMAIL }}
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT || 22 }}
-          envs: I18N_EN,I18N_ES
+          envs: I18N_EN,I18N_ES,SMTP_HOST,SMTP_PORT,SMTP_SECURE,SMTP_USER,SMTP_PASS,CONTACT_TO_EMAIL
           script: |
             cd ${{ secrets.VPS_PROJECT_PATH || '~/portfolio' }}
 
@@ -83,6 +89,19 @@ jobs:
               echo "⚠️ I18N_ES secret not valid, using example"
               cp src/i18n/es.example.json src/i18n/es.json
             fi
+
+            # Write .env file for Docker from secrets
+            cat > .env <<ENVEOF
+            SMTP_HOST=${SMTP_HOST}
+            SMTP_PORT=${SMTP_PORT}
+            SMTP_SECURE=${SMTP_SECURE}
+            SMTP_USER=${SMTP_USER}
+            SMTP_PASS=${SMTP_PASS}
+            CONTACT_TO_EMAIL=${CONTACT_TO_EMAIL}
+            ENVEOF
+            # Remove leading whitespace from heredoc
+            sed -i 's/^[[:space:]]*//' .env
+            echo "✅ .env written from secrets"
 
             # Rebuild and restart with Docker
             docker compose down
