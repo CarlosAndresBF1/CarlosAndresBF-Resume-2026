@@ -1,0 +1,114 @@
+---
+import { defaultLang } from "../i18n";
+
+const lang = defaultLang;
+
+Astro.response.status = 500;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>500 — Error del servidor</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <style>
+      @font-face {
+        font-family: "Neutral Face";
+        src:
+          url("/assets/fonts/NeutralFaceRegular.woff2") format("woff2"),
+          url("/assets/fonts/NeutralFaceRegular.woff") format("woff");
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Manrope";
+        src:
+          url("/assets/fonts/Manrope-Light.woff2") format("woff2"),
+          url("/assets/fonts/Manrope-Light.woff") format("woff");
+        font-weight: 300;
+        font-style: normal;
+        font-display: swap;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #0e0e0e;
+        color: #e0e0e0;
+        font-family: "Manrope", sans-serif;
+        text-align: center;
+        padding: 2rem;
+      }
+      .error-code {
+        font-family: "Neutral Face", sans-serif;
+        font-size: clamp(100px, 20vw, 200px);
+        line-height: 1;
+        background: radial-gradient(
+          circle at top center,
+          rgba(255, 255, 255, 0.3),
+          rgba(64, 51, 51, 0.8)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .error-title {
+        font-family: "Neutral Face", sans-serif;
+        font-size: clamp(20px, 4vw, 36px);
+        margin-top: 0.5rem;
+        color: #e0e0e0;
+      }
+      .error-message {
+        font-size: 16px;
+        font-weight: 300;
+        color: #b5b5b5;
+        margin-top: 1rem;
+        max-width: 400px;
+      }
+      .error-link {
+        display: inline-block;
+        margin-top: 2rem;
+        padding: 10px 30px;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 4px;
+        color: #e0e0e0;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+      }
+      .error-link:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.8);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="error-code">500</div>
+    <h1 class="error-title">
+      {lang === "es" ? "Error del servidor" : "Server error"}
+    </h1>
+    <p class="error-message">
+      {
+        lang === "es"
+          ? "Algo salió mal. Por favor intenta de nuevo más tarde."
+          : "Something went wrong. Please try again later."
+      }
+    </p>
+    <a class="error-link" href={`/${lang}`}>
+      {lang === "es" ? "Volver al inicio" : "Back to home"}
+    </a>
+  </body>
+</html>
