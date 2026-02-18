@@ -1,0 +1,126 @@
+{
+  "lang": "es",
+  "meta": {
+    "title": "Tu Nombre | Tu Título Profesional",
+    "description": "Portafolio de Tu Nombre — breve descripción de tu perfil."
+  },
+  "nav": {
+    "home": "Inicio",
+    "about": "Sobre mí",
+    "experience": "Experiencia",
+    "skills": "Habilidades",
+    "projects": "Proyectos",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "name": "Nombre",
+    "lastName": "Apellido",
+    "role": "Tu Rol / Título",
+    "tagline": "Una frase corta que describa lo que haces.",
+    "marquee": [
+      "Habilidad1",
+      "Habilidad2",
+      "Habilidad3",
+      "Habilidad4",
+      "Habilidad5"
+    ]
+  },
+  "about": {
+    "title": "Sobre Mí",
+    "subtitle": "Tu Título",
+    "description": "Un párrafo describiendo tu perfil profesional, experiencia y especializaciones.",
+    "location": "Ciudad, País",
+    "email": "tu.email@ejemplo.com",
+    "phone": "+57 300 000 0000",
+    "circleItems": [
+      "Perfil",
+      "Código",
+      "Sistemas",
+      "Educación",
+      "Trabajo",
+      "Contacto"
+    ]
+  },
+  "summary": [
+    {
+      "title": "Experiencia",
+      "heading": "Experiencia",
+      "text": "Resumen de tu experiencia profesional."
+    },
+    {
+      "title": "Proyectos",
+      "heading": "Proyectos",
+      "text": "Resumen de tus tipos de proyectos y stack tecnológico."
+    },
+    {
+      "title": "Habilidades",
+      "heading": "Habilidades",
+      "text": "Resumen de tus habilidades técnicas."
+    },
+    {
+      "title": "Trabajo Actual",
+      "heading": "Trabajando En",
+      "text": "Descripción de tu rol actual y responsabilidades."
+    },
+    {
+      "title": "Sobre Mí",
+      "heading": "Sobre Mí",
+      "text": "Descripción personal y filosofía profesional."
+    },
+    {
+      "title": "Tu Nombre",
+      "heading": "Tu Nombre Completo",
+      "text": "Breve biografía combinando tu experiencia, habilidades y áreas de enfoque."
+    }
+  ],
+  "experience": {
+    "title": "Experiencia Laboral",
+    "jobs": [
+      {
+        "number": "01",
+        "company": "Nombre de la Empresa",
+        "role": "Tu Rol",
+        "period": "Fecha Inicio – Fecha Fin",
+        "summary": "Breve resumen de tus responsabilidades.",
+        "details": "Descripción detallada de logros y tecnologías utilizadas.",
+        "stack": ["Tech1", "Tech2", "Tech3"]
+      }
+    ]
+  },
+  "skills": {
+    "title": "Habilidades",
+    "categories": [
+      {
+        "name": "Nombre de Categoría",
+        "items": [
+          {
+            "name": "Nombre de Habilidad",
+            "description": "Descripción de tu competencia con esta habilidad.",
+            "workplaces": ["Empresa A", "Empresa B"],
+            "years": "5+"
+          }
+        ]
+      }
+    ]
+  },
+  "contact": {
+    "title": "Hablemos",
+    "titleHighlight": "Conectemos",
+    "subtitle": "¡Me encantaría saber de ti! Ya sea que tengas una pregunta, una idea de proyecto o simplemente quieras saludar, no dudes en contactarme.",
+    "form": {
+      "name": "Nombre",
+      "email": "Correo electrónico",
+      "subject": "Asunto",
+      "message": "Mensaje",
+      "send": "Enviar",
+      "sending": "Enviando...",
+      "success": "¡Mensaje enviado exitosamente!",
+      "error": "Error al enviar el mensaje. Por favor intenta de nuevo."
+    }
+  },
+  "footer": {
+    "name": "Tu Nombre Completo",
+    "email": "tu.email@ejemplo.com"
+  },
+  "switchLang": "EN"
+}

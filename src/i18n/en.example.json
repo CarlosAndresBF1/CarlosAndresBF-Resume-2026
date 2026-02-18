@@ -1,0 +1,126 @@
+{
+  "lang": "en",
+  "meta": {
+    "title": "Your Name | Your Title",
+    "description": "Portfolio of Your Name — brief description of your profile."
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "experience": "Experience",
+    "skills": "Skills",
+    "projects": "Projects",
+    "contact": "Contact"
+  },
+  "hero": {
+    "name": "First Name",
+    "lastName": "Last Name",
+    "role": "Your Role / Title",
+    "tagline": "A short tagline describing what you do.",
+    "marquee": [
+      "Skill1",
+      "Skill2",
+      "Skill3",
+      "Skill4",
+      "Skill5"
+    ]
+  },
+  "about": {
+    "title": "About Me",
+    "subtitle": "Your Title",
+    "description": "A paragraph describing your professional profile, experience, and specializations.",
+    "location": "City, Country",
+    "email": "your.email@example.com",
+    "phone": "+1 234 567 8900",
+    "circleItems": [
+      "Profile",
+      "Code",
+      "Systems",
+      "Education",
+      "Work",
+      "Contact"
+    ]
+  },
+  "summary": [
+    {
+      "title": "Experience",
+      "heading": "Experience",
+      "text": "Summary of your professional experience."
+    },
+    {
+      "title": "Projects",
+      "heading": "Projects",
+      "text": "Overview of your project types and tech stack."
+    },
+    {
+      "title": "Skills",
+      "heading": "Skills",
+      "text": "Summary of your technical skills."
+    },
+    {
+      "title": "Current Work",
+      "heading": "Working On",
+      "text": "Description of your current role and responsibilities."
+    },
+    {
+      "title": "About Me",
+      "heading": "About Me",
+      "text": "Personal description and professional philosophy."
+    },
+    {
+      "title": "Your Name",
+      "heading": "Your Full Name",
+      "text": "Brief bio combining your experience, skills, and focus areas."
+    }
+  ],
+  "experience": {
+    "title": "Work Experience",
+    "jobs": [
+      {
+        "number": "01",
+        "company": "Company Name",
+        "role": "Your Role",
+        "period": "Start Date – End Date",
+        "summary": "Brief summary of your responsibilities.",
+        "details": "Detailed description of achievements and technologies used.",
+        "stack": ["Tech1", "Tech2", "Tech3"]
+      }
+    ]
+  },
+  "skills": {
+    "title": "Skills",
+    "categories": [
+      {
+        "name": "Category Name",
+        "items": [
+          {
+            "name": "Skill Name",
+            "description": "Description of your proficiency with this skill.",
+            "workplaces": ["Company A", "Company B"],
+            "years": "5+"
+          }
+        ]
+      }
+    ]
+  },
+  "contact": {
+    "title": "Let's",
+    "titleHighlight": "Connect",
+    "subtitle": "I'd love to hear from you! Whether you have a question, a project idea, or just want to say hello, feel free to reach out.",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "subject": "Subject",
+      "message": "Message",
+      "send": "Send",
+      "sending": "Sending...",
+      "success": "Message sent successfully!",
+      "error": "Error sending message. Please try again."
+    }
+  },
+  "footer": {
+    "name": "Your Full Name",
+    "email": "your.email@example.com"
+  },
+  "switchLang": "ES"
+}
