@@ -1,20 +1,23 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import Navbar from "../../components/Navbar.astro";
-import Hero from "../../components/Hero.astro";
-import About from "../../components/About.astro";
-import Projects from "../../components/Projects.astro";
-import Experience from "../../components/Experience.astro";
-import Skills from "../../components/Skills.astro";
-import Contact from "../../components/Contact.astro";
-import Footer from "../../components/Footer.astro";
-
-export function getStaticPaths() {
-  return [{ params: { lang: "en" } }, { params: { lang: "es" } }];
-}
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Hero from '../../components/Hero.astro';
+import About from '../../components/About.astro';
+import Projects from '../../components/Projects.astro';
+import Experience from '../../components/Experience.astro';
+import Skills from '../../components/Skills.astro';
+import Contact from '../../components/Contact.astro';
+import Footer from '../../components/Footer.astro';
+import type { Lang } from '../../i18n';
 
 const { lang } = Astro.params;
-const validLang = lang === "en" || lang === "es" ? lang : "en";
+
+// Validate language parameter
+if (lang !== 'en' && lang !== 'es') {
+  return Astro.redirect('/en');
+}
+
+const validLang: Lang = lang;
 ---
 
 <Layout lang={validLang}>
