@@ -52,7 +52,31 @@ const allSkillItems = skills.categories.flatMap((cat: any) => cat.items);
       <div class="skillsDiscription col-lg-6 col-12">
         <div class="main-content active p-2" id="mainContent">
           <h3>{allSkillItems[0]?.name}</h3>
-          <p class="normalFont text-justify">{allSkillItems[0]?.description}</p>
+          {
+            allSkillItems[0]?.years && (
+              <span class="skill-years-badge">
+                {allSkillItems[0].years} {lang === "es" ? "años" : "years"}
+              </span>
+            )
+          }
+          <p class="normalFont text-justify mt-2">
+            {allSkillItems[0]?.description}
+          </p>
+          {
+            allSkillItems[0]?.workplaces &&
+              allSkillItems[0].workplaces.length > 0 && (
+                <div class="skill-workplaces">
+                  <h6>
+                    {lang === "es" ? "Experiencia en:" : "Experience at:"}
+                  </h6>
+                  <ul>
+                    {allSkillItems[0].workplaces.map((wp: string) => (
+                      <li>{wp}</li>
+                    ))}
+                  </ul>
+                </div>
+              )
+          }
         </div>
       </div>
     </div>
@@ -63,24 +87,59 @@ const allSkillItems = skills.categories.flatMap((cat: any) => cat.items);
   document.addEventListener("DOMContentLoaded", () => {
     const mainContent = document.getElementById("mainContent");
     const boxes = Array.from(document.querySelectorAll(".skillpara"));
+    let activeBox: HTMLElement | null = null;
 
     const showContent = (e: Event) => {
       const target = e.target as HTMLElement;
       const name = target.getAttribute("data-content");
       const description = target.getAttribute("data-description");
+      const workplacesRaw = target.getAttribute("data-workplaces");
+      const years = target.getAttribute("data-years");
+
+      // Toggle: if clicking the same skill, deselect it
+      if (activeBox === target) {
+        activeBox.classList.remove("skill-active");
+        activeBox = null;
+        if (mainContent) {
+          mainContent.innerHTML = "";
+          mainContent.classList.remove("active");
+        }
+        return;
+      }
+
+      // Remove previous active
+      if (activeBox) activeBox.classList.remove("skill-active");
+      activeBox = target;
+      target.classList.add("skill-active");
+
       if (mainContent && name && description) {
-        mainContent.innerHTML = `<h3>${name}</h3><p class="normalFont text-justify">${description}</p>`;
+        let workplaces: string[] = [];
+        try {
+          workplaces = JSON.parse(workplacesRaw || "[]");
+        } catch {
+          workplaces = [];
+        }
+
+        let html = `<h3>${name}</h3>`;
+        if (years) {
+          html += `<span class="skill-years-badge">${years} ${document.documentElement.lang === "es" ? "años" : "years"}</span>`;
+        }
+        html += `<p class="normalFont text-justify mt-2">${description}</p>`;
+        if (workplaces.length > 0) {
+          html += `<div class="skill-workplaces"><h6>${document.documentElement.lang === "es" ? "Experiencia en:" : "Experience at:"}</h6><ul>`;
+          workplaces.forEach((wp: string) => {
+            html += `<li>${wp}</li>`;
+          });
+          html += `</ul></div>`;
+        }
+
+        mainContent.innerHTML = html;
         mainContent.classList.add("active");
       }
     };
 
-    const hideContent = () => {
-      if (mainContent) mainContent.classList.remove("active");
-    };
-
     boxes.forEach((box) => {
-      box.addEventListener("mouseover", showContent);
-      box.addEventListener("mouseout", hideContent);
+      box.addEventListener("click", showContent);
     });
   });
 </script>
@@ -108,6 +167,16 @@ const allSkillItems = skills.categories.flatMap((cat: any) => cat.items);
       rgba(255, 255, 255, 0.208) 100%
     );
   }
+  .skillsContainer div p.skill-active {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.15) 0%,
+      rgba(50, 50, 50, 1) 30%,
+      rgba(50, 50, 50, 1) 70%,
+      rgba(255, 255, 255, 0.25) 100%
+    );
+    border-left: 3px solid #fff;
+  }
   .skillsDiscription {
     margin: 5px 0px;
     padding: 20px;
@@ -129,6 +198,45 @@ const allSkillItems = skills.categories.flatMap((cat: any) => cat.items);
   }
   .main-content.active {
     opacity: 1;
+  }
+  .skill-years-badge {
+    display: inline-block;
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+  }
+  .skill-workplaces {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .skill-workplaces h6 {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 8px;
+  }
+  .skill-workplaces ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .skill-workplaces ul li {
+    padding: 4px 0;
+    font-size: 14px;
+    color: var(--text-theme-secondary);
+    position: relative;
+    padding-left: 16px;
+  }
+  .skill-workplaces ul li::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: rgba(255, 255, 255, 0.4);
   }
   @media only screen and (max-width: 600px) {
     .skills {

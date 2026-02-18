@@ -17,13 +17,7 @@
     "lastName": "Last Name",
     "role": "Your Role / Title",
     "tagline": "A short tagline describing what you do.",
-    "marquee": [
-      "Skill1",
-      "Skill2",
-      "Skill3",
-      "Skill4",
-      "Skill5"
-    ]
+    "marquee": ["Skill1", "Skill2", "Skill3", "Skill4", "Skill5"]
   },
   "about": {
     "title": "About Me",
