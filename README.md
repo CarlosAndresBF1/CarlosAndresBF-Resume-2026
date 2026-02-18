@@ -29,7 +29,37 @@ cp src/i18n/es.example.json src/i18n/es.json
 
 Edit `en.json` and `es.json` with your personal data (name, experience, skills, etc.).
 
-### 3. Run locally
+### 3. Configure the contact form (email sending)
+
+Copy the example environment file and fill in your SMTP credentials:
+
+```sh
+cp .env.example .env
+```
+
+Edit `.env` with your values:
+
+```env
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-app-password
+CONTACT_TO_EMAIL=your-email@gmail.com
+```
+
+**Provider examples:**
+
+| Provider  | Host                    | Port | Secure |
+| :-------- | :---------------------- | :--- | :----- |
+| Gmail     | `smtp.gmail.com`        | 587  | false  |
+| Outlook   | `smtp.office365.com`    | 587  | false  |
+| SendGrid  | `smtp.sendgrid.net`     | 587  | false  |
+| Zoho      | `smtp.zoho.com`         | 465  | true   |
+
+> **Gmail users:** You need to generate an [App Password](https://myaccount.google.com/apppasswords) (requires 2FA enabled). Use the 16-character app password as `SMTP_PASS`, not your regular Gmail password.
+
+### 4. Run locally
 
 ```sh
 npm run dev
