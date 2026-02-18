@@ -1,20 +1,20 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import Navbar from '../../components/Navbar.astro';
-import Hero from '../../components/Hero.astro';
-import About from '../../components/About.astro';
-import Projects from '../../components/Projects.astro';
-import Experience from '../../components/Experience.astro';
-import Skills from '../../components/Skills.astro';
-import Contact from '../../components/Contact.astro';
-import Footer from '../../components/Footer.astro';
-import type { Lang } from '../../i18n';
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
+import Hero from "../../components/Hero.astro";
+import About from "../../components/About.astro";
+import Projects from "../../components/Projects.astro";
+import Experience from "../../components/Experience.astro";
+import Skills from "../../components/Skills.astro";
+import Contact from "../../components/Contact.astro";
+import Footer from "../../components/Footer.astro";
+import type { Lang } from "../../i18n";
 
 const { lang } = Astro.params;
 
 // Validate language parameter
-if (lang !== 'en' && lang !== 'es') {
-  return Astro.redirect('/en');
+if (lang !== "en" && lang !== "es") {
+  return Astro.redirect("/en");
 }
 
 const validLang: Lang = lang;
