@@ -19,13 +19,24 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Write i18n files from secrets
+      - name: Write i18n files
+        env:
+          I18N_EN: ${{ secrets.I18N_EN }}
+          I18N_ES: ${{ secrets.I18N_ES }}
         run: |
-          echo '${{ secrets.I18N_EN }}' > src/i18n/en.json
-          echo '${{ secrets.I18N_ES }}' > src/i18n/es.json
-          # Fallback to examples if secrets are not set
-          [ -s src/i18n/en.json ] || cp src/i18n/en.example.json src/i18n/en.json
-          [ -s src/i18n/es.json ] || cp src/i18n/es.example.json src/i18n/es.json
+          # Write secrets if they contain valid JSON, otherwise use examples
+          if echo "$I18N_EN" | python3 -c "import sys,json; json.load(sys.stdin)" 2>/dev/null; then
+            echo "$I18N_EN" > src/i18n/en.json
+          else
+            echo "⚠️ I18N_EN secret not set or invalid, using example"
+            cp src/i18n/en.example.json src/i18n/en.json
+          fi
+          if echo "$I18N_ES" | python3 -c "import sys,json; json.load(sys.stdin)" 2>/dev/null; then
+            echo "$I18N_ES" > src/i18n/es.json
+          else
+            echo "⚠️ I18N_ES secret not set or invalid, using example"
+            cp src/i18n/es.example.json src/i18n/es.json
+          fi
 
       - name: Run tests
         run: npm test
