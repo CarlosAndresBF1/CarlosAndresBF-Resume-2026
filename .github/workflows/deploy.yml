@@ -8,6 +8,7 @@ jobs:
   test:
     name: Run Tests
     runs-on: ubuntu-latest
+    environment: "CICD RESUME"
     steps:
       - uses: actions/checkout@v4
 
@@ -48,6 +49,7 @@ jobs:
     name: Deploy to VPS
     needs: test
     runs-on: ubuntu-latest
+    environment: "CICD RESUME"
     steps:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
