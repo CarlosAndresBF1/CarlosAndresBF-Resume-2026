@@ -1,0 +1,26 @@
+// Custom Bootstrap build - only import what's needed
+// Full bundle is ~227KB, this reduces to ~40KB
+
+// 1. Required core
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/root";
+
+// 2. Layout
+@import "bootstrap/scss/containers";
+@import "bootstrap/scss/grid";
+
+// 3. Components used
+@import "bootstrap/scss/nav";
+@import "bootstrap/scss/navbar";
+@import "bootstrap/scss/card";
+
+// 4. Helpers
+@import "bootstrap/scss/helpers/position";
+
+// 5. Utilities (d-flex, flex-column, mt-*, p-*, text-center, fw-bold, w-100, gap-*, etc.)
+@import "bootstrap/scss/utilities";
+@import "bootstrap/scss/utilities/api";

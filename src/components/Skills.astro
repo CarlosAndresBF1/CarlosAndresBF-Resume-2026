@@ -20,7 +20,7 @@ const clickHint =
 <section class="skills flex-col-wise full-vh mt-5" id="skills">
   <div class="container">
     <div>
-      <h1 class="mt-5 titleFont text-left shadow">{skills.title}</h1>
+      <h2 class="mt-5 titleFont text-left shadow">{skills.title}</h2>
     </div>
     <div class="row p-0 m-0">
       <div class="skillsContainer text-center col-lg-8 col-12">
@@ -83,9 +83,13 @@ const clickHint =
     const placeholder = document.getElementById("skillPlaceholder");
     const content = document.getElementById("skillDetailContent");
     const skillName = document.getElementById("skillName");
-    const skillYears = document.getElementById("skillYears") as HTMLElement | null;
+    const skillYears = document.getElementById(
+      "skillYears",
+    ) as HTMLElement | null;
     const skillDesc = document.getElementById("skillDesc");
-    const skillWorkplaces = document.getElementById("skillWorkplaces") as HTMLElement | null;
+    const skillWorkplaces = document.getElementById(
+      "skillWorkplaces",
+    ) as HTMLElement | null;
     const skillExpLabel = document.getElementById("skillExpLabel");
     const skillWpList = document.getElementById("skillWpList");
 
@@ -96,13 +100,16 @@ const clickHint =
     container.setAttribute("data-skills-init", "true");
 
     const yearsLabel = detailPanel.getAttribute("data-years-label") || "years";
-    const expLabel = detailPanel.getAttribute("data-exp-label") || "Experience at:";
+    const expLabel =
+      detailPanel.getAttribute("data-exp-label") || "Experience at:";
 
     let activeBox: HTMLElement | null = null;
 
     // Use event delegation on the container
     container.addEventListener("click", (e: Event) => {
-      const target = (e.target as HTMLElement).closest(".skillpara") as HTMLElement | null;
+      const target = (e.target as HTMLElement).closest(
+        ".skillpara",
+      ) as HTMLElement | null;
       if (!target) return;
 
       const name = target.getAttribute("data-content");
@@ -140,12 +147,18 @@ const clickHint =
         if (skillDesc) skillDesc.textContent = description;
 
         let workplaces: string[] = [];
-        try { workplaces = JSON.parse(workplacesRaw || "[]"); } catch { workplaces = []; }
+        try {
+          workplaces = JSON.parse(workplacesRaw || "[]");
+        } catch {
+          workplaces = [];
+        }
 
         if (skillWorkplaces && skillWpList && skillExpLabel) {
           if (workplaces.length > 0) {
             skillExpLabel.textContent = expLabel;
-            skillWpList.innerHTML = workplaces.map((wp: string) => `<li>${wp}</li>`).join("");
+            skillWpList.innerHTML = workplaces
+              .map((wp: string) => `<li>${wp}</li>`)
+              .join("");
             skillWorkplaces.style.display = "block";
           } else {
             skillWorkplaces.style.display = "none";
