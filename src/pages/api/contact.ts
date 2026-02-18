@@ -19,11 +19,11 @@ function isRateLimited(ip: string): boolean {
 // Sanitize input to prevent XSS
 function sanitize(str: string): string {
   return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#x27;')
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#x27;")
     .trim();
 }
 
@@ -38,7 +38,7 @@ const securityHeaders = {
 export const POST: APIRoute = async ({ request, clientAddress }) => {
   try {
     // Rate limiting
-    const ip = clientAddress || 'unknown';
+    const ip = clientAddress || "unknown";
     if (isRateLimited(ip)) {
       return new Response(
         JSON.stringify({ error: "Too many requests. Please try again later." }),
@@ -47,12 +47,12 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     }
 
     // Validate Content-Type
-    const contentType = request.headers.get('content-type');
-    if (!contentType || !contentType.includes('application/json')) {
-      return new Response(
-        JSON.stringify({ error: "Invalid content type" }),
-        { status: 415, headers: securityHeaders },
-      );
+    const contentType = request.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      return new Response(JSON.stringify({ error: "Invalid content type" }), {
+        status: 415,
+        headers: securityHeaders,
+      });
     }
 
     const body = await request.json();
@@ -67,7 +67,12 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     }
 
     // Validate field lengths
-    if (name.length > 100 || subject.length > 200 || message.length > 5000 || email.length > 254) {
+    if (
+      name.length > 100 ||
+      subject.length > 200 ||
+      message.length > 5000 ||
+      email.length > 254
+    ) {
       return new Response(
         JSON.stringify({ error: "Field length exceeds maximum allowed" }),
         { status: 400, headers: securityHeaders },
@@ -77,10 +82,10 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return new Response(
-        JSON.stringify({ error: "Invalid email format" }),
-        { status: 400, headers: securityHeaders },
-      );
+      return new Response(JSON.stringify({ error: "Invalid email format" }), {
+        status: 400,
+        headers: securityHeaders,
+      });
     }
 
     // Sanitize inputs
@@ -103,9 +108,9 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     );
   } catch (error) {
     console.error("Contact form error:", error);
-    return new Response(
-      JSON.stringify({ error: "Internal server error" }),
-      { status: 500, headers: securityHeaders },
-    );
+    return new Response(JSON.stringify({ error: "Internal server error" }), {
+      status: 500,
+      headers: securityHeaders,
+    });
   }
 };
