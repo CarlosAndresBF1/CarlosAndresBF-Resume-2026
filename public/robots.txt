@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://carlosandresbf.dev/sitemap.xml
+Sitemap: https://carlosandresbf.com/sitemap.xml
