@@ -176,8 +176,3 @@ An **Astro** (v5, SSR) implementation based on a fork of the original portfolio 
 
 - **Original template:** [prasadlakhara/portfolio-template](https://prasadlakhara.github.io/portfolio-template/) — HTML/CSS/JS portfolio template.
 - **Astro implementation:** This project adapts the original template into an Astro-based application with server-side rendering, i18n (EN/ES), Docker support, and interactive skills with workplace data.
-
-
-## License
-
-This project is based on the open-source [portfolio-template](https://prasadlakhara.github.io/portfolio-template/) by Prasad Lakhara. Please respect the original license terms.
