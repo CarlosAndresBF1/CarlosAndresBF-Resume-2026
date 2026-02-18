@@ -1,0 +1,227 @@
+---
+import type { Lang } from '../i18n';
+import { useTranslations } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const marqueeItems = t.hero.marquee;
+---
+
+<section class="heroSection d-flex flex-column full-vh" id="home">
+  <canvas id="dustCanvas" style="z-index: 0;"></canvas>
+  <div class="full-vh d-flex flex-column">
+    <h1 class="text-center herotitle">{t.hero.name}<br/>{t.hero.lastName}</h1>
+    <h2 class="mt-5 text-center subtitleFont p-2 neutralFonts">{t.hero.role}</h2>
+    <p class="text-center subtitleFont p-2">"{t.hero.tagline}"</p>
+    <div class="marquee-container mt-auto container mb-lg-2 mb-5">
+      <div class="marque-gradiant"></div>
+      <div class="marquee-content">
+        {marqueeItems.map((item: string) => (
+          <span class="marqueeText">{item}</span>
+        ))}
+        {marqueeItems.map((item: string) => (
+          <span class="marqueeText" aria-hidden="true">{item}</span>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .heroSection {
+    background: rgb(255, 255, 255);
+    background: radial-gradient(circle at top center, rgba(255, 255, 255, 0.4), rgba(0, 0, 0, 0.8) 5%);
+    background-position: 50% 75%;
+    background-size: 200% 100%;
+  }
+  canvas { display: block; }
+  #dustCanvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -1;
+  }
+  .herotitle {
+    font-size: 120px;
+    text-align: center;
+    background: rgb(0,0,0);
+    background: radial-gradient(circle at top center, rgba(255,255,255,0.1), rgba(68,61,61,0.8) 104%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    padding-top: 10%;
+    font-family: "Neutral Face", sans-serif;
+    line-height: 1.1;
+  }
+  .marquee-container {
+    overflow: hidden;
+    position: relative;
+    padding: 0px;
+  }
+  .marque-gradiant {
+    position: absolute;
+    top: 0; height: 100%; width: 100%;
+    z-index: 2;
+    background: linear-gradient(to right, black, transparent 10%, transparent 90%, black);
+    pointer-events: none;
+  }
+  .marquee-content {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: clip;
+    animation: marquee-move-text var(--speed, 25s) linear infinite var(--direction, forwards);
+  }
+  @keyframes marquee-move-text {
+    to { transform: translateX(-50%); }
+  }
+  .marqueeText {
+    font-size: 18px;
+    color: var(--text-theme-secondary);
+    padding: 3px 15px;
+  }
+  @media only screen and (max-width: 600px) {
+    .herotitle {
+      padding-top: 25%;
+      font-size: 50px;
+    }
+  }
+</style>
+
+<script>
+  // Hero gradient animation
+  const heroSection = document.querySelector(".heroSection") as HTMLElement;
+  const heroTitle = document.querySelector(".herotitle") as HTMLElement;
+  const isMobileHero = window.innerWidth < 600;
+
+  const heroConfig = {
+    div: { radius: 5, maxRadius: 29, speed: 0.3, opacity: 0, maxOpacity: 0.2, opacityStep: 0.05 },
+    text: { radius: isMobileHero ? 180 : 29, maxRadius: 49, speed: 0.2, opacity: isMobileHero ? 0.8 : 0.2, maxOpacity: 1, opacityStep: 0.1 }
+  };
+
+  const gradientPrefix = 'radial-gradient(circle at top center, rgba(255, 255, 255,';
+  const divGradientSuffix = '), rgba(0, 0, 0, 0.8)';
+  const textGradientSuffix = '), rgba(64, 51, 51)';
+
+  function animateGradientDiv() {
+    const { div } = heroConfig;
+    div.radius += div.speed;
+    div.opacity = Math.min(div.opacity + div.opacityStep, div.maxOpacity);
+    if (heroSection) heroSection.style.background = `${gradientPrefix} ${div.opacity}${divGradientSuffix} ${div.radius}%)`;
+    if (div.radius < div.maxRadius) requestAnimationFrame(animateGradientDiv);
+    else animateTextGradient();
+  }
+
+  function animateTextGradient() {
+    const { text } = heroConfig;
+    text.radius += text.speed;
+    text.opacity = Math.min(text.opacity + text.opacityStep, text.maxOpacity);
+    if (heroTitle) {
+      Object.assign(heroTitle.style, {
+        background: `${gradientPrefix} ${text.opacity}${textGradientSuffix} ${text.radius}%)`,
+        webkitBackgroundClip: "text",
+        webkitTextFillColor: "transparent"
+      });
+    }
+    if (text.radius < text.maxRadius) requestAnimationFrame(animateTextGradient);
+  }
+
+  animateGradientDiv();
+
+  // Stars / Dust canvas
+  const canvas = document.getElementById('dustCanvas') as HTMLCanvasElement;
+  if (canvas) {
+    const ctx = canvas.getContext('2d')!;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    let canvasWidth = canvas.width;
+    let canvasHeight = canvas.height;
+    let mouseX = canvasWidth / 2;
+    let mouseY = canvasHeight / 2;
+
+    const MAX_PARTICLES = 100;
+    const MAX_MOVE_SPEED = 0.5;
+    const MIN_LIFE = 100;
+    const MAX_LIFE = 200;
+    const MIN_OPACITY = 0.3;
+    const MAX_OPACITY = 0.8;
+    const TWO_PI = Math.PI * 2;
+
+    let isThrottled = false;
+    window.addEventListener('mousemove', (event) => {
+      if (!isThrottled) {
+        requestAnimationFrame(() => { mouseX = event.clientX; mouseY = event.clientY; isThrottled = false; });
+        isThrottled = true;
+      }
+    });
+
+    class Particle {
+      x = 0; y = 0; radius = 0; xSpeed = 0; ySpeed = 0; opacity = 0; life = 0;
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * canvasWidth;
+        this.y = Math.random() * canvasHeight;
+        this.radius = Math.random() * 2;
+        this.xSpeed = (Math.random() - 0.5) * 0.0000001;
+        this.ySpeed = (Math.random() - 0.5) * 0.0000001;
+        this.opacity = Math.random() * (MAX_OPACITY - MIN_OPACITY) + MIN_OPACITY;
+        this.life = Math.random() * (MAX_LIFE - MIN_LIFE) + MIN_LIFE;
+      }
+      update() {
+        const dx = mouseX - this.x;
+        const dy = mouseY - this.y;
+        const distance = Math.hypot(dx, dy);
+        if (distance > 0) {
+          const factor = MAX_MOVE_SPEED / distance;
+          this.x += dx * factor;
+          this.y += dy * factor;
+        }
+        this.life--;
+        this.x = (this.x + canvasWidth) % canvasWidth;
+        this.y = (this.y + canvasHeight) % canvasHeight;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, TWO_PI);
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+        ctx.fill();
+      }
+    }
+
+    const particlePool = new Array(MAX_PARTICLES);
+    for (let i = 0; i < MAX_PARTICLES; i++) particlePool[i] = new Particle();
+    let activeParticles = 0;
+
+    function createParticle() {
+      if (activeParticles < MAX_PARTICLES) { particlePool[activeParticles].reset(); activeParticles++; }
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+      for (let i = activeParticles - 1; i >= 0; i--) {
+        const particle = particlePool[i];
+        particle.update();
+        particle.draw();
+        if (particle.life <= 0) {
+          activeParticles--;
+          if (i < activeParticles) particlePool[i] = particlePool[activeParticles];
+        }
+      }
+      createParticle();
+      requestAnimationFrame(animateParticles);
+    }
+
+    const resizeObserver = new ResizeObserver(entries => {
+      for (const entry of entries) {
+        const { width, height } = entry.contentRect;
+        canvas.width = width; canvas.height = height;
+        canvasWidth = width; canvasHeight = height;
+      }
+    });
+    resizeObserver.observe(canvas);
+    animateParticles();
+  }
+</script>

@@ -1,0 +1,87 @@
+---
+import type { Lang } from '../i18n';
+import { useTranslations } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const experience = t.experience;
+---
+
+<section class="experienceSection flex-col-wise full-vh mt-5" id="experience">
+  <div class="container d-flex flex-column justify-content-center mt-5">
+    <div>
+      <h1 class="titleFont text-left mt-5">{experience.title}</h1>
+    </div>
+    <div class="experience">
+      {experience.jobs.map((job) => (
+        <div class="experienceCard row mt-4">
+          <div class="col-lg-3 col-12">
+            <p class="subtitleFont">{job.number}.</p>
+            <p class="subtitleFont">{job.company}</p>
+            <p class="normalFont" style="font-size:14px; color: var(--text-theme-secondary);">{job.role}</p>
+            <p class="normalFont" style="font-size:13px; color: var(--text-theme-secondary);">{job.period}</p>
+          </div>
+          <div class="col-lg-9 col-12">
+            <p class="collapsible normalFont pt-4">{job.summary}</p>
+            <div class="content normalFont">
+              <p>{job.details}</p>
+            </div>
+            <p class="normalFont">Tech Stack:</p>
+            <div class="d-flex flex-row flex-wrap">
+              {job.stack.map((tech) => (
+                <span class="bubbleData normalFont mx-2 my-1">{tech}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const coll = document.getElementsByClassName("collapsible");
+    for (let i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function(this: HTMLElement) {
+        this.classList.toggle("active");
+        const content = this.nextElementSibling as HTMLElement;
+        if (content) {
+          content.style.display = content.style.display === "block" ? "none" : "block";
+        }
+      });
+    }
+  });
+</script>
+
+<style>
+  .experienceSection {
+    background-color: var(--bg-theme-secondary);
+  }
+  .experienceCard {
+    padding-bottom: 20px;
+  }
+  .experienceCard:not(:last-child) {
+    border-bottom: 1px solid #cccccc2b;
+  }
+  .bubbleData {
+    display: inline-block;
+    padding: 3px 15px;
+    border: 1px solid #949494;
+    border-radius: 5px;
+  }
+  .collapsible {
+    cursor: pointer;
+  }
+  .content {
+    display: none;
+    overflow: hidden;
+  }
+  @media only screen and (max-width: 600px) {
+    .experienceSection { padding: 50px 0px; }
+  }
+</style>
