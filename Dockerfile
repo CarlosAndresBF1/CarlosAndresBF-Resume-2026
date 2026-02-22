@@ -12,6 +12,10 @@ RUN npm ci
 # Copy source code
 COPY . .
 
+# Accept GTM ID as build argument (PUBLIC_ prefix required by Astro/Vite)
+ARG PUBLIC_GTM_ID=""
+ENV PUBLIC_GTM_ID=${PUBLIC_GTM_ID}
+
 # Build the Astro project
 RUN npm run build
 

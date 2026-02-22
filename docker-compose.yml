@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        PUBLIC_GTM_ID: ${PUBLIC_GTM_ID:-}
     container_name: portfolio
     ports:
       - "4321:4321"

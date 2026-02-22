@@ -90,6 +90,9 @@ jobs:
               cp src/i18n/es.example.json src/i18n/es.json
             fi
 
+            # Preserve PUBLIC_GTM_ID from existing .env (managed manually on VPS)
+            EXISTING_GTM_ID=$(grep '^PUBLIC_GTM_ID=' .env 2>/dev/null | cut -d= -f2- || echo "")
+
             # Write .env file for Docker from secrets
             cat > .env <<ENVEOF
             SMTP_HOST=${SMTP_HOST}
@@ -98,6 +101,7 @@ jobs:
             SMTP_USER=${SMTP_USER}
             SMTP_PASS=${SMTP_PASS}
             CONTACT_TO_EMAIL=${CONTACT_TO_EMAIL}
+            PUBLIC_GTM_ID=${EXISTING_GTM_ID}
             ENVEOF
             # Remove leading whitespace from heredoc
             sed -i 's/^[[:space:]]*//' .env
